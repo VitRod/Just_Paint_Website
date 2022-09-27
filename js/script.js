@@ -121,7 +121,13 @@ colorSelector.addEventListener('change', ()=>{
   });
 
 
-
+// Select Brush tool
+brush.addEventListener('click', (event) =>{
+    canvas.style.cursor = `url('${curBrush}'), auto`;
+    currentTool = 'brush';
+    isEraser = false;
+    currentColor = colorSelector.value;
+  });
 
 
 
