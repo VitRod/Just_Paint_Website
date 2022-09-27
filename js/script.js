@@ -110,7 +110,10 @@ function getMousePosition(event) {
  * Event Listners
  */
 
-
+// Mouse Up
+canvas.addEventListener('mouseup', () => {
+    isDrawing = false;  
+  });
 
 
 
