@@ -131,6 +131,14 @@
     opacity: 1;
   }
 
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: rgb(47, 47, 47);
+  }
+
 
 
 
