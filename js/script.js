@@ -13,3 +13,58 @@ const downloadBtn = document.getElementById('download');
 const undoBtn = document.getElementById('undo');
 const redoBtn = document.getElementById('redo');
 const colorSelector = document.getElementById('bucket-color');
+
+// Global variables 
+const canvas = document.createElement('canvas');
+canvas.id = 'canvas';
+const context = canvas.getContext('2d');
+let isEraser = false;
+let isDrawing = false;
+let currentColor = 'ffffff';
+let currentBackground = 'ffffff';
+let currentTool = 'brush';
+let currentSize = 10;
+let drawnArray = [];
+let partialDrawnArray = [];
+let steps = 10;
+let stepsIdentifier = [];
+redoBtn.disabled = true;
+undoBtn.disabled = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
