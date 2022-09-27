@@ -145,7 +145,17 @@
     background: rgb(47, 47, 47);
   }
 
-
+/* JS Color */
+.jscolor {
+    border-style: solid;
+    border-radius: 5px;
+    height: 35px;
+    width: 120px;
+    margin-left: 3px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+  }
 
 
 
