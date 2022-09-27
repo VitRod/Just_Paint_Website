@@ -88,6 +88,10 @@
   .bucket {
     top: 9px;
   }
+
+  button:focus {
+    outline: 0 !important;
+  }
   
 
 
