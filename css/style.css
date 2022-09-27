@@ -51,7 +51,11 @@
 }
 
 /* Tools */
-
+.active-tool {
+    position: absolute;
+    top: 9px;
+    left: 5px;
+  }
 
 
 
