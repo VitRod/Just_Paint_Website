@@ -157,7 +157,14 @@
     outline: none;
   }
 
-
+/* Canvas */
+canvas#canvas {
+  
+    position: absolute;
+    top: 50px;
+    cursor: crosshair;
+    z-index: 10;
+  }
 
 
 
