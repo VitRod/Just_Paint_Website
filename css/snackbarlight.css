@@ -6,6 +6,19 @@
     z-index: 99999;
   }
 
+  .snackbar {
+    overflow: hidden;
+    clear: both;
+    min-width: 288px;
+    max-width: 568px;
+    cursor: pointer;
+    opacity: 0;
+  }
+  .snackbar.active {
+    height: auto;
+    opacity: 1;
+  }
+
 
 
 
