@@ -62,7 +62,21 @@ function displayBrushSize(currentSize) {
 
 // Draw what is stored in DrawnArray
 
-
+function restoreCanvas(arr) {
+    for (let i = 1; i < arr.length; i++) {
+      context.beginPath();
+      context.moveTo(arr[i - 1].x, drawnArray[i - 1].y);
+      context.lineWidth = arr[i].size;
+      context.lineCap = 'round';
+      if (arr[i].erase) {
+        context.strokeStyle = `#${currentBackground}`;
+      } else {
+        context.strokeStyle = `#${drawnArray[i].color}`;
+      }
+      context.lineTo(arr[i].x, drawnArray[i].y);
+      context.stroke();
+    }
+  }
 
 
 
