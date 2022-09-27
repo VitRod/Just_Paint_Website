@@ -151,7 +151,33 @@ brushSlider.addEventListener('change', () => {
   });
 
 
-
+// UNDO functionality
+undoBtn.addEventListener('click', () =>{  
+    createCanvas();
+    redo.disabled = false;
+  
+    //creat partial drawn array based on how many steps to back(skipping the undefined values)
+    stepsIdentifier = [];
+    if (partialDrawnArray.length === 0) {    
+      for (let i = drawnArray.length -1; i < drawnArray.length; i--) {
+        if(drawnArray[i].color !== undefined ){
+          stepsIdentifier.push(drawnArray[i]);
+        }
+        if(stepsIdentifier.length === steps){
+          break;
+        }      
+      }
+    } else {
+      for (let i = partialDrawnArray.length -1; i >= 0 ; i--) {
+        if(partialDrawnArray[i].color !== undefined ){
+          stepsIdentifier.push(partialDrawnArray[i]);
+        }
+        if(stepsIdentifier.length === steps){
+          break;
+        }
+      }  
+    };  
+  
 
 
 
