@@ -242,6 +242,27 @@ redoBtn.addEventListener('click', () =>{
        
   });
 
-
+  canvas.addEventListener('mousedown', ()=>{
+    if(currentTool === 'bucket'){
+    currentBackground = currentColor;
+    createCanvas();
+    if(partialDrawnArray.length > 0){
+      restoreCanvas(partialDrawnArray);
+    } else if(partialDrawnArray.length === 0 && redoBtn.disabled === false){
+      restoreCanvas(partialDrawnArray);
+    } else {
+      restoreCanvas(drawnArray);
+    }
+    
+  } else{ 
+    isDrawing = true;
+    const currentPosition = getMousePosition(event);  
+    context.moveTo(currentPosition.x, currentPosition.y);
+    context.beginPath();
+    context.lineWidth = currentSize;
+    context.lineCap = 'round';
+    context.strokeStyle = `#${currentColor}`;
+  }
+});
 
 
