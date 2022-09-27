@@ -60,7 +60,7 @@ function displayBrushSize(currentSize) {
     }  
   }
 
-
+// Draw what is stored in DrawnArray
 
 
 
