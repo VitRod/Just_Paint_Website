@@ -138,6 +138,12 @@
     height: 10px;
     background: rgb(47, 47, 47);
   }
+  
+  .slider::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    background: rgb(47, 47, 47);
+  }
 
 
 
