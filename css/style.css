@@ -66,6 +66,14 @@
     user-select: none;
   }
 
+  .tool {
+    position: relative; 
+  }
+  
+  .tool:not(:first-child) {
+    margin-left: 8px;
+  }
+
 
 
 
