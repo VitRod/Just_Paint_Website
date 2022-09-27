@@ -31,6 +31,16 @@ let stepsIdentifier = [];
 redoBtn.disabled = true;
 undoBtn.disabled = true;
 
+// cursors
+const curBrush = 'icons/paint.png';
+const curBucket = 'icons/fill-drip.png';
+const curEraser = 'icons/erase_icon.png';
+canvas.style.cursor = `url('${curBrush}'), auto`; 
+
+/**
+ * Functions
+ */
+
 
 
 
