@@ -178,7 +178,25 @@ undoBtn.addEventListener('click', () =>{
       }  
     };  
   
-
+    if(stepsIdentifier.length < steps){
+        partialDrawnArray = [];
+      } else {
+        let tillToUndo = drawnArray.indexOf(stepsIdentifier[stepsIdentifier.length - 1]);
+        partialDrawnArray = drawnArray.slice(0, tillToUndo);
+      }  
+    
+      // restore canvas with partial drawnArray 
+      restoreCanvas(partialDrawnArray);  
+    
+      if(partialDrawnArray.length === 0){
+        undoBtn.disabled = true;
+        eraser.disabled = true;
+        canvas.style.cursor = `url('${curBrush}'), auto`;
+        currentTool = 'brush';
+        isEraser = false;
+        currentColor = colorSelector.value;
+      };   
+    });    
 
 
 
