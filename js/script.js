@@ -199,7 +199,48 @@ undoBtn.addEventListener('click', () =>{
     });    
 
 
-
+// Redo functionality
+redoBtn.addEventListener('click', () =>{
+  
+    undoBtn.disabled = false;
+    eraser.disabled = false;
+    //creat partial drawn array based on how many steps to forward(skipping the undefined values)
+    stepsIdentifier = [];
+    if (partialDrawnArray.length === 0) {    
+      for (let i = 0; i < drawnArray.length; i++) {
+        if(drawnArray[i].color !== undefined ){
+          stepsIdentifier.push(drawnArray[i]);
+        }
+        if(stepsIdentifier.length === steps){
+          break;
+        }      
+      }
+    } else {
+      for (let i = partialDrawnArray.length -1; i < drawnArray.length ; i++) {
+        if(drawnArray[i].color !== undefined ){
+          stepsIdentifier.push(drawnArray[i]);
+        }
+        if(stepsIdentifier.length === steps){
+          break;
+        }
+      }  
+    };  
+  
+    if(stepsIdentifier.length < steps){
+      partialDrawnArray = [...drawnArray];
+    } else {
+      let tillToUndo = drawnArray.indexOf(stepsIdentifier[stepsIdentifier.length - 1]);
+      partialDrawnArray = drawnArray.slice(0, tillToUndo);
+    }
+    
+    // Re-store canvas fro partial drawnArray
+    restoreCanvas(partialDrawnArray); 
+    
+    if(drawnArray.length === partialDrawnArray.length){
+      redoBtn.disabled = true;
+    }
+       
+  });
 
 
 
