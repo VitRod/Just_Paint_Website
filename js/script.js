@@ -115,7 +115,10 @@ canvas.addEventListener('mouseup', () => {
     isDrawing = false;  
   });
 
-
+// Select current color
+colorSelector.addEventListener('change', ()=>{
+    currentColor = colorSelector.value;  
+  });
 
 
 
