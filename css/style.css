@@ -57,6 +57,15 @@
     left: 5px;
   }
 
+  .active-tool > span {
+    background-color: rgb(82, 82, 82);
+    border-radius: 5px;
+    padding: 2.5px 16px;
+    color: white;
+    font-size: 20px;
+    user-select: none;
+  }
+
 
 
 
