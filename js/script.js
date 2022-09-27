@@ -51,7 +51,14 @@ function createCanvas() {
   
   };  
 
-
+// Formatting Brush Size
+function displayBrushSize(currentSize) {
+    if(currentSize >= 10){
+      brushSize.innerText = currentSize;
+    } else{
+      brushSize.innerText = `0${currentSize}`;
+    }  
+  }
 
 
 
