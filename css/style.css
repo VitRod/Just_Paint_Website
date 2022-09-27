@@ -21,6 +21,20 @@
     justify-content: center;
   }
   
+  /* Font Awesome Icons */
+.fas,
+.far, button .fas {
+  font-size: 25px;
+  position: relative;
+  top: 5px;
+  background-color: rgb(82, 82, 82);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  width: 40px;
+  text-align: center;
+  cursor: pointer;
+}
 
 
 
