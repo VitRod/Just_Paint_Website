@@ -92,6 +92,11 @@
   button:focus {
     outline: 0 !important;
   }
+
+  .steps {
+    position: relative; 
+    width: 45px; 
+  }
   
 
 
