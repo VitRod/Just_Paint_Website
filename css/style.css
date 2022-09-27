@@ -36,6 +36,11 @@
   cursor: pointer;
 }
 
+.fas:hover,
+.far:hover {
+  filter: brightness(90%);
+}
+
 
 
 
