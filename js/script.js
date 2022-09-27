@@ -135,7 +135,14 @@ bucket.addEventListener('click', (event) =>{
     currentTool = 'bucket'
   });
 
-
+// Select Eraser tool
+eraser.addEventListener('click', (event) =>{
+    canvas.style.cursor = `url('${curEraser}'), auto`;
+    currentTool = 'eraser';
+    isEraser = true;  
+    currentColor = currentBackground;  
+    currentSize = brushSlider.value;
+  });
 
 
 
