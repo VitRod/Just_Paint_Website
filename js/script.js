@@ -41,7 +41,15 @@ canvas.style.cursor = `url('${curBrush}'), auto`;
  * Functions
  */
 
-
+// Create Canvas
+function createCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 50;
+    context.fillStyle = `#${currentBackground}`;  
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    body.appendChild(canvas); 
+  
+  };  
 
 
 
