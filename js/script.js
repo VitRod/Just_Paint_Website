@@ -144,7 +144,11 @@ eraser.addEventListener('click', (event) =>{
     currentSize = brushSlider.value;
   });
 
-
+// Setting Brush Size
+brushSlider.addEventListener('change', () => {
+    currentSize = brushSlider.value;
+    displayBrushSize(currentSize);
+  });
 
 
 
