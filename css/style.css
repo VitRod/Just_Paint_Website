@@ -74,6 +74,18 @@
     margin-left: 8px;
   }
 
+  .brush {
+    background-color: rgb(114, 114, 114);
+    height: 44px;
+    width: 345px;
+    top: 9px;
+  }
+  
+  .brush > * {
+    margin-left: 10px;
+  }
+  
+
 
 
 
