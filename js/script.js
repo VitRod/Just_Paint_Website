@@ -129,7 +129,11 @@ brush.addEventListener('click', (event) =>{
     currentColor = colorSelector.value;
   });
 
-
+// Select Bucket tool
+bucket.addEventListener('click', (event) =>{
+    canvas.style.cursor = `url('${curBucket}'), auto`;
+    currentTool = 'bucket'
+  });
 
 
 
