@@ -234,3 +234,33 @@ if (typeof exports == "object") {
 	// Vue use if vue is being used on the page
 	Vue.use(SnackbarLight);
 }
+
+
+/////////////////
+// Data-toggle //
+/////////////////
+
+// Search all elements for the data toggle the snackbar
+var elements = document.querySelectorAll("[data-toggle=snackbar]");
+
+// Loop them and add event listeners to them
+for (var i = elements.length - 1; i >= 0; i--) {
+	elements[i].addEventListener("click", function(){
+		var options = {};
+
+		if (this.getAttribute("data-link") !== null) {
+			options.link = this.getAttribute("data-link");
+		}
+		if (this.getAttribute("data-timeout") !== null) {
+			options.timeout = this.getAttribute("data-timeout");
+		}
+		if (this.getAttribute("data-activeClass") !== null) {
+			options.activeClass = this.getAttribute("data-active-class");
+		}
+		if (this.getAttribute("data-url")) {
+			options.url = this.getAttribute("data-url");
+		}
+			
+		new Snackbar(this.getAttribute("data-content"), options);
+	});
+}
