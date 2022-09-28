@@ -173,3 +173,22 @@ Snackbar.prototype = {
 			element.remove();
 		}, 10000);
 	},
+
+	/**
+	 * Compare the options to the default ones.
+	 *
+	 * @param  {Object} newOptions
+	 * @return {Object}
+	 */
+	 activateOptions: function(newOptions) {
+		var __self = this,
+  			options = newOptions || {};
+
+    	for (var opt in this.options) {
+        	if (__self.options.hasOwnProperty(opt) && !options.hasOwnProperty(opt)) {
+            	options[opt] = __self.options[opt];
+        	}
+        }
+       	return options;
+	},
+};
