@@ -350,6 +350,12 @@ downloadBtn.addEventListener('click', () => {
    console.log('download clicked') ;
 });
 
+/**
+ * On Load
+ */
+ createCanvas();
+
+
 
 
 
