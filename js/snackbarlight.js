@@ -192,3 +192,45 @@ Snackbar.prototype = {
        	return options;
 	},
 };
+
+
+///////////////////////////////
+// Vuejs/ browserify support //
+///////////////////////////////
+SnackbarLight = {
+	/**
+	 * Install function for Vue
+	 *
+	 * @param  {Object} Vue
+	 * @return {void}
+	 */
+	install: function(Vue){
+		var __self = this;
+		Vue.prototype.$snackbar = {};
+	  	Vue.prototype.$snackbar.create = function(data, options, callback){
+	  		__self.create(data, options, callback);
+	  	};
+	},
+
+	/**
+	 * Create a new snackbar
+	 *
+	 * @param  {string}   data
+	 * @param  {Object}   options
+	 * @param  {Function} callback
+	 * @return {void}
+	 */
+	create: function(data, options, callback){
+		new Snackbar(data, options, callback);
+	}
+};
+
+if (typeof exports == "object") {
+	// Export
+    module.exports = SnackbarLight;
+} else if (typeof define == "function" && define.amd) {
+	define([], function(){ return SnackbarLight });
+} else if (window.Vue) {
+	// Vue use if vue is being used on the page
+	Vue.use(SnackbarLight);
+}
