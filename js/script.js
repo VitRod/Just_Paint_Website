@@ -343,6 +343,12 @@ clearStorageBtn.addEventListener('click', () => {
   new Snackbar("Local Storage Cleared", {timeout: 1500});
 });
 
+// Download Image
+downloadBtn.addEventListener('click', () => {
+  downloadBtn.href = canvas.toDataURL('image/jpeg', 1);
+  downloadBtn.download = 'paint.jpeg';
+   console.log('download clicked') ;
+});
 
 
 
