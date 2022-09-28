@@ -121,3 +121,15 @@ Snackbar.prototype = {
 		// Add the event listeners
 		this.listeners(snackbar);
 	},
+
+	/**
+	 * Get the data/ message to display in the snackbar
+	 *
+	 * @return {string}
+	 */
+	 getData: function() {
+		if (this.options.link !== false) {
+			return "<span>" + this.data + "</span><a href='" + this.options.url + "'>" + this.options.link + "</a>";
+		}
+		return "<span>" + this.data + "</span>";
+	},
