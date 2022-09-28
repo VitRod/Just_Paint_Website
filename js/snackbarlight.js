@@ -17,7 +17,6 @@
 	}
 }
 
-
 Snackbar.prototype = {
 
 	/**
@@ -36,13 +35,12 @@ Snackbar.prototype = {
 		url: "#",
 	},
 
-
 	/**
 	 * Create container for the snackbar
 	 *
 	 * @return {void}
 	 */
-	 start: function() {
+	start: function() {
 		if (!document.getElementById("snackbar-container")) {
 			var snackbarContainer = document.createElement("div");
 			
@@ -59,7 +57,7 @@ Snackbar.prototype = {
 	 * @param  {int}   delay
 	 * @return {void}
 	 */
-	 timer: function(callback, delay) {
+	timer: function(callback, delay) {
 	    var remaining = delay;
 
 	    this.timer = {
@@ -90,7 +88,7 @@ Snackbar.prototype = {
 	 *
 	 * @return {void}
 	 */
-	 snackbar: function() {
+	snackbar: function() {
 		var __self = this,
 			snackbar = document.createElement("div");
 		
@@ -127,7 +125,7 @@ Snackbar.prototype = {
 	 *
 	 * @return {string}
 	 */
-	 getData: function() {
+	getData: function() {
 		if (this.options.link !== false) {
 			return "<span>" + this.data + "</span><a href='" + this.options.url + "'>" + this.options.link + "</a>";
 		}
@@ -140,7 +138,7 @@ Snackbar.prototype = {
 	 * @param  {Object} element
 	 * @return {void}
 	 */
-	 listeners: function(element) {
+	listeners: function(element) {
 		var __self = this;
 		// Adding event listener for when user clicks on the snackbar to remove it
 		element.addEventListener("click", function(){
@@ -166,7 +164,7 @@ Snackbar.prototype = {
 	 * @param  {object} element
 	 * @return {void}
 	 */
-	 destroy: function(element) {
+	destroy: function(element) {
 		// Delay for removing the element (for when there are animations)
 		this.timer.pause();
 		setTimeout(function() {
@@ -180,7 +178,7 @@ Snackbar.prototype = {
 	 * @param  {Object} newOptions
 	 * @return {Object}
 	 */
-	 activateOptions: function(newOptions) {
+	activateOptions: function(newOptions) {
 		var __self = this,
   			options = newOptions || {};
 
@@ -192,7 +190,6 @@ Snackbar.prototype = {
        	return options;
 	},
 };
-
 
 ///////////////////////////////
 // Vuejs/ browserify support //
@@ -234,7 +231,6 @@ if (typeof exports == "object") {
 	// Vue use if vue is being used on the page
 	Vue.use(SnackbarLight);
 }
-
 
 /////////////////
 // Data-toggle //
