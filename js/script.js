@@ -312,3 +312,10 @@ canvas.addEventListener('mousemove', (event) => {
   
 });
 
+// Clear Canvas
+clearCanvasBtn.addEventListener('click', () => {
+  createCanvas();
+  drawnArray = [];
+  partialDrawnArray = [];
+  new Snackbar("Canvas Cleared", {timeout: 1500});  
+});
