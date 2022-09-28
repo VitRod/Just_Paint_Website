@@ -159,3 +159,17 @@ Snackbar.prototype = {
 			__self.timer.resume();
 		});
 	},
+
+	/**
+	 * Remove the snackbar
+	 *
+	 * @param  {object} element
+	 * @return {void}
+	 */
+	 destroy: function(element) {
+		// Delay for removing the element (for when there are animations)
+		this.timer.pause();
+		setTimeout(function() {
+			element.remove();
+		}, 10000);
+	},
