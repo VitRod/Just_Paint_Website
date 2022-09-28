@@ -319,3 +319,9 @@ clearCanvasBtn.addEventListener('click', () => {
   partialDrawnArray = [];
   new Snackbar("Canvas Cleared", {timeout: 1500});  
 });
+
+// Save to Local Storage
+saveStorageBtn.addEventListener('click', () => {
+  localStorage.setItem('savedCanvas', JSON.stringify(drawnArray));
+  new Snackbar("Canvas Saved", {timeout: 1500});  
+});
