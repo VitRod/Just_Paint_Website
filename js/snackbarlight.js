@@ -84,3 +84,40 @@ Snackbar.prototype = {
 	    // Start the timer
 	    this.timer.resume();
 	},
+
+	/**
+	 * snackbar
+	 *
+	 * @return {void}
+	 */
+	 snackbar: function() {
+		var __self = this,
+			snackbar = document.createElement("div");
+		
+		// Put the snackbar inside the snackbar container
+		document.getElementById("snackbar-container").appendChild(snackbar);
+
+	  	// Set the html inside the snackbar
+	  	snackbar.innerHTML = this.getData();
+		
+		// Set the class of the snackbar
+		snackbar.setAttribute("class", "snackbar");
+
+		// Wait to set the active class so animations will be activated
+		setTimeout(function() {
+			snackbar.setAttribute("class","snackbar " + __self.options.activeClass);
+		}, 50);
+
+		// If the timeout is false the snackbar will not be destroyed after some time
+		// only when the user clicks on it
+		if (this.options.timeout !== false) {
+			// Start the timer
+			this.timer(function() {
+				snackbar.setAttribute("class", "snackbar");
+				__self.destroy(snackbar);
+			}, this.options.timeout);
+		}
+
+		// Add the event listeners
+		this.listeners(snackbar);
+	},
