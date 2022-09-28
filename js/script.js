@@ -266,5 +266,49 @@ redoBtn.addEventListener('click', () =>{
 });
 
 // Mouse Move
-
+canvas.addEventListener('mousemove', (event) => {
+  
+  if (isDrawing) {        
+    const currentPosition = getMousePosition(event);    
+    context.lineTo(currentPosition.x, currentPosition.y);
+    context.stroke();
+     if(partialDrawnArray.length > 0){
+      drawnArray = [...partialDrawnArray];       
+      partialDrawnArray = [];       
+      storeDrawn(
+        currentPosition.x,
+        currentPosition.y,
+        currentSize,
+        currentColor,
+        isEraser,
+      );
+    } else if(partialDrawnArray.length === 0 && redoBtn.disabled === false){
+      drawnArray = [];       
+      partialDrawnArray = [];            
+      storeDrawn(
+        currentPosition.x,
+        currentPosition.y,
+        currentSize,
+        currentColor,
+        isEraser,
+      );
+    } else{
+      
+      storeDrawn(
+        currentPosition.x,
+        currentPosition.y,
+        currentSize,
+        currentColor,
+        isEraser,
+      );
+    }
+    undoBtn.disabled = false;
+    redoBtn.disabled = true;
+    eraser.disabled = false; 
+  
+  }  else {
+    storeDrawn(undefined);
+  } 
+  
+});
 
