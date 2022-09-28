@@ -337,7 +337,11 @@ loadStorageBtn.addEventListener('click', () => {
   }
 });
 
-
+// Clear Local Storage
+clearStorageBtn.addEventListener('click', () => {
+  localStorage.removeItem('savedCanvas');
+  new Snackbar("Local Storage Cleared", {timeout: 1500});
+});
 
 
 
