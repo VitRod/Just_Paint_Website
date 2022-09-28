@@ -133,3 +133,29 @@ Snackbar.prototype = {
 		}
 		return "<span>" + this.data + "</span>";
 	},
+
+	/**
+	 * Activate the listeners
+	 *
+	 * @param  {Object} element
+	 * @return {void}
+	 */
+	 listeners: function(element) {
+		var __self = this;
+		// Adding event listener for when user clicks on the snackbar to remove it
+		element.addEventListener("click", function(){
+			if (typeof __self.callback == "function") {
+				__self.callback();
+			}
+			element.setAttribute("class", "snackbar");
+	    	__self.destroy(element);
+		});
+
+		// Stopping the timer when user hovers on the snackbar
+		element.addEventListener("mouseenter",function(){
+			__self.timer.pause();
+		});
+		element.addEventListener("mouseout",function(){
+			__self.timer.resume();
+		});
+	},
