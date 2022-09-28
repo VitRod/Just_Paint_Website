@@ -51,3 +51,36 @@ Snackbar.prototype = {
 			document.body.appendChild(snackbarContainer);
 		}
 	},
+
+	/**
+	 * Timer
+	 *
+	 * @param  {Function} callback
+	 * @param  {int}   delay
+	 * @return {void}
+	 */
+	 timer: function(callback, delay) {
+	    var remaining = delay;
+
+	    this.timer = {
+	    	// Create random timer id
+	    	timerId: Math.round(Math.random()*1000),
+
+		    pause: function() {
+		        // Clear the timeout
+		        window.clearTimeout(this.timerId);
+		        // Set the remaining to what time remains
+		        remaining -= new Date() - start;
+		    },
+
+		    resume: function() {
+		        start = new Date();
+		        // Clear the timeout
+		        window.clearTimeout(this.timerId);
+		        // Set the timeout again
+		        this.timerId = window.setTimeout(callback, remaining);
+		    },	
+	    };
+	    // Start the timer
+	    this.timer.resume();
+	},
