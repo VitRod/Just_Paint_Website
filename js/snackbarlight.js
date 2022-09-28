@@ -35,3 +35,19 @@ Snackbar.prototype = {
 		// If not used clicking will activate the callback or do nothing
 		url: "#",
 	},
+
+
+	/**
+	 * Create container for the snackbar
+	 *
+	 * @return {void}
+	 */
+	 start: function() {
+		if (!document.getElementById("snackbar-container")) {
+			var snackbarContainer = document.createElement("div");
+			
+			snackbarContainer.setAttribute("id", "snackbar-container");
+			
+			document.body.appendChild(snackbarContainer);
+		}
+	},
