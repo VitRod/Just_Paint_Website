@@ -325,3 +325,43 @@ saveStorageBtn.addEventListener('click', () => {
   localStorage.setItem('savedCanvas', JSON.stringify(drawnArray));
   new Snackbar("Canvas Saved", {timeout: 1500});  
 });
+
+// Load from Local Storage
+loadStorageBtn.addEventListener('click', () => {
+  if (localStorage.getItem('savedCanvas')) {
+    drawnArray = JSON.parse(localStorage.savedCanvas);
+    restoreCanvas(drawnArray);
+    new Snackbar("Canvas Loaded", {timeout: 1500});
+  } else {
+    new Snackbar("Nothing To Load", {timeout: 1500});
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
