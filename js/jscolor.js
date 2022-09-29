@@ -241,3 +241,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 			elm.className = elm.className.replace(repl, '$1');
 		}
 	},
+
+    getStyle : function (elm) {
+		return window.getComputedStyle ? window.getComputedStyle(elm) : elm.currentStyle;
+	},
