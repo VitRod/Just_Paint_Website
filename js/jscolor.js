@@ -53,3 +53,14 @@ if (!window.jscolor) { window.jscolor = (function () {
                 }
             }
         },
+
+        isColorAttrSupported : (function () {
+            var elm = document.createElement('input');
+            if (elm.setAttribute) {
+                elm.setAttribute('type', 'color');
+                if (elm.type.toLowerCase() == 'color') {
+                    return true;
+                }
+            }
+            return false;
+        })(),
