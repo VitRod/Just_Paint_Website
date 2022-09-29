@@ -202,4 +202,8 @@ if (!window.jscolor) { window.jscolor = (function () {
                 el['on' + evnt]();
             }
         },
+
+        classNameToList : function (className) {
+            return className.replace(/^\s+|\s+$/g, '').split(/\s+/);
+        },
     
