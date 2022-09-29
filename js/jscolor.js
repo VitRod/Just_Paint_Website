@@ -178,4 +178,12 @@ if (!window.jscolor) { window.jscolor = (function () {
                 jsc._capturedTarget.setCapture();
             }
         },
+
+        releaseTarget : function () {
+            // IE
+            if (jsc._capturedTarget) {
+                jsc._capturedTarget.releaseCapture();
+                jsc._capturedTarget = null;
+            }
+        },
     
