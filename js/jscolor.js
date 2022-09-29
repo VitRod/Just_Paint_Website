@@ -64,3 +64,8 @@ if (!window.jscolor) { window.jscolor = (function () {
             }
             return false;
         })(),
+
+        isCanvasSupported : (function () {
+            var elm = document.createElement('canvas');
+            return !!(elm.getContext && elm.getContext('2d'));
+        })(),
