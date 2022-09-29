@@ -206,4 +206,14 @@ if (!window.jscolor) { window.jscolor = (function () {
         classNameToList : function (className) {
             return className.replace(/^\s+|\s+$/g, '').split(/\s+/);
         },
+
+
+        // The className parameter (str) can only contain a single class name
+	hasClass : function (elm, className) {
+		if (!className) {
+			return false;
+		}
+		return -1 != (' ' + elm.className.replace(/\s+/g, ' ') + ' ').indexOf(' ' + className + ' ');
+	},
+
     
