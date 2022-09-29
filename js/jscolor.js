@@ -90,3 +90,13 @@ if (!window.jscolor) { window.jscolor = (function () {
         }, 
 
         _attachedGroupEvents : {},
+
+
+
+        attachGroupEvent : function (groupName, el, evnt, func) {
+            if (!jsc._attachedGroupEvents.hasOwnProperty(groupName)) {
+                jsc._attachedGroupEvents[groupName] = [];
+            }
+            jsc._attachedGroupEvents[groupName].push([el, evnt, func]);
+            jsc.attachEvent(el, evnt, func);
+        },
