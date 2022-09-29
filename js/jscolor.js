@@ -216,4 +216,16 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return -1 != (' ' + elm.className.replace(/\s+/g, ' ') + ' ').indexOf(' ' + className + ' ');
 	},
 
+
+
+    // The className parameter (str) can contain multiple class names separated by whitespace
+	setClass : function (elm, className) {
+		var classList = jsc.classNameToList(className);
+		for (var i = 0; i < classList.length; i += 1) {
+			if (!jsc.hasClass(elm, classList[i])) {
+				elm.className += (elm.className ? ' ' : '') + classList[i];
+			}
+		}
+	},
+
     
