@@ -186,4 +186,20 @@ if (!window.jscolor) { window.jscolor = (function () {
                 jsc._capturedTarget = null;
             }
         },
+
+        fireEvent : function (el, evnt) {
+            if (!el) {
+                return;
+            }
+            if (document.createEvent) {
+                var ev = document.createEvent('HTMLEvents');
+                ev.initEvent(evnt, true, true);
+                el.dispatchEvent(ev);
+            } else if (document.createEventObject) {
+                var ev = document.createEventObject();
+                el.fireEvent('on' + evnt, ev);
+            } else if (el['on' + evnt]) { // alternatively use the traditional event model
+                el['on' + evnt]();
+            }
+        },
     
