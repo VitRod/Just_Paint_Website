@@ -159,3 +159,9 @@ if (!window.jscolor) { window.jscolor = (function () {
                 }
             }
         },
+
+        warn : function (msg) {
+            if (window.console && window.console.warn) {
+                window.console.warn(msg);
+            }
+        },
