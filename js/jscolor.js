@@ -170,4 +170,20 @@ if (!window.jscolor) { window.jscolor = (function () {
             if (e.preventDefault) { e.preventDefault(); }
             e.returnValue = false;
         },
+
+        captureTarget : function (target) {
+            // IE
+            if (target.setCapture) {
+                jsc._capturedTarget = target;
+                jsc._capturedTarget.setCapture();
+            }
+        },
+
+        releaseTarget : function () {
+            // IE
+            if (jsc._capturedTarget) {
+                jsc._capturedTarget.releaseCapture();
+                jsc._capturedTarget = null;
+            }
+        },
     
