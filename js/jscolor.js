@@ -111,3 +111,51 @@ if (!window.jscolor) { window.jscolor = (function () {
                 delete jsc._attachedGroupEvents[groupName];
             }
         },
+
+        attachDOMReadyEvent : function (func) {
+            var fired = false;
+            var fireOnce = function () {
+                if (!fired) {
+                    fired = true;
+                    func();
+                }
+            };
+    
+            if (document.readyState === 'complete') {
+                setTimeout(fireOnce, 1); // async
+                return;
+            }
+    
+            if (document.addEventListener) {
+                document.addEventListener('DOMContentLoaded', fireOnce, false);
+    
+                // Fallback
+                window.addEventListener('load', fireOnce, false);
+    
+            } else if (document.attachEvent) {
+                // IE
+                document.attachEvent('onreadystatechange', function () {
+                    if (document.readyState === 'complete') {
+                        document.detachEvent('onreadystatechange', arguments.callee);
+                        fireOnce();
+                    }
+                })
+    
+                // Fallback
+                window.attachEvent('onload', fireOnce);
+    
+                // IE7/8
+                if (document.documentElement.doScroll && window == window.top) {
+                    var tryScroll = function () {
+                        if (!document.body) { return; }
+                        try {
+                            document.documentElement.doScroll('left');
+                            fireOnce();
+                        } catch (e) {
+                            setTimeout(tryScroll, 1);
+                        }
+                    };
+                    tryScroll();
+                }
+            }
+        },
