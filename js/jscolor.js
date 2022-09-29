@@ -245,3 +245,60 @@ if (!window.jscolor) { window.jscolor = (function () {
     getStyle : function (elm) {
 		return window.getComputedStyle ? window.getComputedStyle(elm) : elm.currentStyle;
 	},
+
+
+    setStyle : (function () {
+		var helper = document.createElement('div');
+		var getSupportedProp = function (names) {
+			for (var i = 0; i < names.length; i += 1) {
+				if (names[i] in helper.style) {
+					return names[i];
+				}
+			}
+		};
+		var props = {
+			borderRadius: getSupportedProp(['borderRadius', 'MozBorderRadius', 'webkitBorderRadius']),
+			boxShadow: getSupportedProp(['boxShadow', 'MozBoxShadow', 'webkitBoxShadow'])
+		};
+		return function (elm, prop, value) {
+			switch (prop.toLowerCase()) {
+			case 'opacity':
+				var alphaOpacity = Math.round(parseFloat(value) * 100);
+				elm.style.opacity = value;
+				elm.style.filter = 'alpha(opacity=' + alphaOpacity + ')';
+				break;
+			default:
+				elm.style[props[prop]] = value;
+				break;
+			}
+		};
+	})(),
+
+
+	setBorderRadius : function (elm, value) {
+		jsc.setStyle(elm, 'borderRadius', value || '0');
+	},
+
+
+	setBoxShadow : function (elm, value) {
+		jsc.setStyle(elm, 'boxShadow', value || 'none');
+	},
+
+
+	getElementPos : function (e, relativeToViewport) {
+		var x=0, y=0;
+		var rect = e.getBoundingClientRect();
+		x = rect.left;
+		y = rect.top;
+		if (!relativeToViewport) {
+			var viewPos = jsc.getViewPos();
+			x += viewPos[0];
+			y += viewPos[1];
+		}
+		return [x, y];
+	},
+
+
+	getElementSize : function (e) {
+		return [e.offsetWidth, e.offsetHeight];
+	},
