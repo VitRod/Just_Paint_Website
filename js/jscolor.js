@@ -165,3 +165,9 @@ if (!window.jscolor) { window.jscolor = (function () {
                 window.console.warn(msg);
             }
         },
+
+        preventDefault : function (e) {
+            if (e.preventDefault) { e.preventDefault(); }
+            e.returnValue = false;
+        },
+    
