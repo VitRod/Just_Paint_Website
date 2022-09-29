@@ -100,3 +100,14 @@ if (!window.jscolor) { window.jscolor = (function () {
             jsc._attachedGroupEvents[groupName].push([el, evnt, func]);
             jsc.attachEvent(el, evnt, func);
         },
+
+
+        detachGroupEvents : function (groupName) {
+            if (jsc._attachedGroupEvents.hasOwnProperty(groupName)) {
+                for (var i = 0; i < jsc._attachedGroupEvents[groupName].length; i += 1) {
+                    var evt = jsc._attachedGroupEvents[groupName][i];
+                    jsc.detachEvent(evt[0], evt[1], evt[2]);
+                }
+                delete jsc._attachedGroupEvents[groupName];
+            }
+        },
