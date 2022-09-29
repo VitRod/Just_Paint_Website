@@ -87,4 +87,6 @@ if (!window.jscolor) { window.jscolor = (function () {
                 return attrValue;
             }
             return null;
-        },
+        }, 
+
+        
