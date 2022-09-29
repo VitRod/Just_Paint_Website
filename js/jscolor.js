@@ -89,4 +89,4 @@ if (!window.jscolor) { window.jscolor = (function () {
             return null;
         }, 
 
-        
+        _attachedGroupEvents : {},
