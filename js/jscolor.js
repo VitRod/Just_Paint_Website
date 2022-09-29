@@ -12,3 +12,9 @@ if (!window.jscolor) { window.jscolor = (function () {
             jsc.attachEvent(document, 'touchstart', jsc.onDocumentTouchStart);
             jsc.attachEvent(window, 'resize', jsc.onWindowResize);
         },
+
+        init : function () {
+            if (jsc.jscolor.lookupClass) {
+                jsc.jscolor.installByClassName(jsc.jscolor.lookupClass);
+            }
+        },
