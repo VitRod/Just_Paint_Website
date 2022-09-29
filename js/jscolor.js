@@ -69,3 +69,22 @@ if (!window.jscolor) { window.jscolor = (function () {
             var elm = document.createElement('canvas');
             return !!(elm.getContext && elm.getContext('2d'));
         })(),
+
+        fetchElement : function (mixed) {
+            return typeof mixed === 'string' ? document.getElementById(mixed) : mixed;
+        },
+    
+    
+        isElementType : function (elm, type) {
+            return elm.nodeName.toLowerCase() === type.toLowerCase();
+        },
+    
+    
+        getDataAttr : function (el, name) {
+            var attrName = 'data-' + name;
+            var attrValue = el.getAttribute(attrName);
+            if (attrValue !== null) {
+                return attrValue;
+            }
+            return null;
+        },
