@@ -610,3 +610,24 @@ if (!window.jscolor) { window.jscolor = (function () {
 		};
 	},
 
+    dispatchChange : function (thisObj) {
+		if (thisObj.valueElement) {
+			if (jsc.isElementType(thisObj.valueElement, 'input')) {
+				jsc.fireEvent(thisObj.valueElement, 'change');
+			}
+		}
+	},
+
+
+	dispatchFineChange : function (thisObj) {
+		if (thisObj.onFineChange) {
+			var callback;
+			if (typeof thisObj.onFineChange === 'string') {
+				callback = new Function (thisObj.onFineChange);
+			} else {
+				callback = thisObj.onFineChange;
+			}
+			callback.call(thisObj);
+		}
+	},
+
