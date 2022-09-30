@@ -416,3 +416,17 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
+
+    _drawPosition : function (thisObj, x, y, positionValue, contractShadow) {
+		var vShadow = contractShadow ? 0 : thisObj.shadowBlur; // px
+
+		jsc.picker.wrap.style.position = positionValue;
+		jsc.picker.wrap.style.left = x + 'px';
+		jsc.picker.wrap.style.top = y + 'px';
+
+		jsc.setBoxShadow(
+			jsc.picker.boxS,
+			thisObj.shadow ?
+				new jsc.BoxShadow(0, vShadow, thisObj.shadowBlur, 0, thisObj.shadowColor) :
+				null);
+	},
