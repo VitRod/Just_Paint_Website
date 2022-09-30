@@ -340,3 +340,12 @@ if (!window.jscolor) { window.jscolor = (function () {
 		y = clientY - targetRect.top;
 		return { x: x, y: y };
 	},
+
+
+    getViewPos : function () {
+		var doc = document.documentElement;
+		return [
+			(window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0),
+			(window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
+		];
+	},
