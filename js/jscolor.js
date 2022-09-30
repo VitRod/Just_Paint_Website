@@ -506,3 +506,15 @@ if (!window.jscolor) { window.jscolor = (function () {
 			}
 		}
 	},
+
+    onWindowResize : function (e) {
+		jsc.redrawPosition();
+	},
+
+
+	onParentScroll : function (e) {
+		// hide the picker when one of the parent elements is scrolled
+		if (jsc.picker && jsc.picker.owner) {
+			jsc.picker.owner.hide();
+		}
+	},
