@@ -532,3 +532,49 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 	_pointerOrigin : null,
 	_capturedTarget : null,
+
+    onControlPointerStart : function (e, target, controlName, pointerType) {
+		var thisObj = target._jscInstance;
+
+		jsc.preventDefault(e);
+		jsc.captureTarget(target);
+
+		var registerDragEvents = function (doc, offset) {
+			jsc.attachGroupEvent('drag', doc, jsc._pointerMoveEvent[pointerType],
+				jsc.onDocumentPointerMove(e, target, controlName, pointerType, offset));
+			jsc.attachGroupEvent('drag', doc, jsc._pointerEndEvent[pointerType],
+				jsc.onDocumentPointerEnd(e, target, controlName, pointerType));
+		};
+
+		registerDragEvents(document, [0, 0]);
+
+		if (window.parent && window.frameElement) {
+			var rect = window.frameElement.getBoundingClientRect();
+			var ofs = [-rect.left, -rect.top];
+			registerDragEvents(window.parent.window.document, ofs);
+		}
+
+		var abs = jsc.getAbsPointerPos(e);
+		var rel = jsc.getRelPointerPos(e);
+		jsc._pointerOrigin = {
+			x: abs.x - rel.x,
+			y: abs.y - rel.y
+		};
+
+		switch (controlName) {
+		case 'pad':
+			// if the slider is at the bottom, move it up
+			switch (jsc.getSliderComponent(thisObj)) {
+			case 's': if (thisObj.hsv[1] === 0) { thisObj.fromHSV(null, 100, null); }; break;
+			case 'v': if (thisObj.hsv[2] === 0) { thisObj.fromHSV(null, null, 100); }; break;
+			}
+			jsc.setPad(thisObj, e, 0, 0);
+			break;
+
+		case 'sld':
+			jsc.setSld(thisObj, e, 0);
+			break;
+		}
+
+		jsc.dispatchFineChange(thisObj);
+	},
