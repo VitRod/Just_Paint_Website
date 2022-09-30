@@ -302,3 +302,18 @@ if (!window.jscolor) { window.jscolor = (function () {
 	getElementSize : function (e) {
 		return [e.offsetWidth, e.offsetHeight];
 	},
+
+    // get pointer's X/Y coordinates relative to viewport
+	getAbsPointerPos : function (e) {
+		if (!e) { e = window.event; }
+		var x = 0, y = 0;
+		if (typeof e.changedTouches !== 'undefined' && e.changedTouches.length) {
+			// touch devices
+			x = e.changedTouches[0].clientX;
+			y = e.changedTouches[0].clientY;
+		} else if (typeof e.clientX === 'number') {
+			x = e.clientX;
+			y = e.clientY;
+		}
+		return { x: x, y: y };
+	},
