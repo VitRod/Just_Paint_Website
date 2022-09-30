@@ -317,3 +317,26 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 		return { x: x, y: y };
 	},
+
+    // get pointer's X/Y coordinates relative to target element
+	getRelPointerPos : function (e) {
+		if (!e) { e = window.event; }
+		var target = e.target || e.srcElement;
+		var targetRect = target.getBoundingClientRect();
+
+		var x = 0, y = 0;
+
+		var clientX = 0, clientY = 0;
+		if (typeof e.changedTouches !== 'undefined' && e.changedTouches.length) {
+			// touch devices
+			clientX = e.changedTouches[0].clientX;
+			clientY = e.changedTouches[0].clientY;
+		} else if (typeof e.clientX === 'number') {
+			clientX = e.clientX;
+			clientY = e.clientY;
+		}
+
+		x = clientX - targetRect.left;
+		y = clientY - targetRect.top;
+		return { x: x, y: y };
+	},
