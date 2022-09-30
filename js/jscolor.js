@@ -449,3 +449,15 @@ if (!window.jscolor) { window.jscolor = (function () {
 			dims[1] + 2 * thisObj.borderWidth
 		];
 	},
+
+    getPadToSliderPadding : function (thisObj) {
+		return Math.max(thisObj.padding, 1.5 * (2 * thisObj.pointerBorderWidth + thisObj.pointerThickness));
+	},
+
+
+	getPadYComponent : function (thisObj) {
+		switch (thisObj.mode.charAt(1).toLowerCase()) {
+			case 'v': return 'v'; break;
+		}
+		return 's';
+	},
