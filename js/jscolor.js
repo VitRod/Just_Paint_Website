@@ -471,3 +471,22 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 		return null;
 	},
+
+    onDocumentMouseDown : function (e) {
+		if (!e) { e = window.event; }
+		var target = e.target || e.srcElement;
+
+		if (target._jscLinkedInstance) {
+			if (target._jscLinkedInstance.showOnClick) {
+				target._jscLinkedInstance.show();
+			}
+		} else if (target._jscControlName) {
+			jsc.onControlPointerStart(e, target, target._jscControlName, 'mouse');
+		} else {
+			// Mouse is outside the picker controls -> hide the color picker!
+			if (jsc.picker && jsc.picker.owner) {
+				jsc.picker.owner.hide();
+			}
+		}
+	},
+
