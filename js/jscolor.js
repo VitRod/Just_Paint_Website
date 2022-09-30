@@ -430,3 +430,14 @@ if (!window.jscolor) { window.jscolor = (function () {
 				new jsc.BoxShadow(0, vShadow, thisObj.shadowBlur, 0, thisObj.shadowColor) :
 				null);
 	},
+
+    getPickerDims : function (thisObj) {
+		var displaySlider = !!jsc.getSliderComponent(thisObj);
+		var dims = [
+			2 * thisObj.insetWidth + 2 * thisObj.padding + thisObj.width +
+				(displaySlider ? 2 * thisObj.insetWidth + jsc.getPadToSliderPadding(thisObj) + thisObj.sliderSize : 0),
+			2 * thisObj.insetWidth + 2 * thisObj.padding + thisObj.height +
+				(thisObj.closable ? 2 * thisObj.insetWidth + thisObj.padding + thisObj.buttonHeight : 0)
+		];
+		return dims;
+	},
