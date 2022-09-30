@@ -441,3 +441,11 @@ if (!window.jscolor) { window.jscolor = (function () {
 		];
 		return dims;
 	},
+
+    getPickerOuterDims : function (thisObj) {
+		var dims = jsc.getPickerDims(thisObj);
+		return [
+			dims[0] + 2 * thisObj.borderWidth,
+			dims[1] + 2 * thisObj.borderWidth
+		];
+	},
