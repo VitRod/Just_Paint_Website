@@ -578,3 +578,22 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 		jsc.dispatchFineChange(thisObj);
 	},
+
+    onDocumentPointerMove : function (e, target, controlName, pointerType, offset) {
+		return function (e) {
+			var thisObj = target._jscInstance;
+			switch (controlName) {
+			case 'pad':
+				if (!e) { e = window.event; }
+				jsc.setPad(thisObj, e, offset[0], offset[1]);
+				jsc.dispatchFineChange(thisObj);
+				break;
+
+			case 'sld':
+				if (!e) { e = window.event; }
+				jsc.setSld(thisObj, e, offset[1]);
+				jsc.dispatchFineChange(thisObj);
+				break;
+			}
+		}
+	},
