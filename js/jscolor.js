@@ -349,3 +349,12 @@ if (!window.jscolor) { window.jscolor = (function () {
 			(window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
 		];
 	},
+
+    getViewSize : function () {
+		var doc = document.documentElement;
+		return [
+			(window.innerWidth || doc.clientWidth),
+			(window.innerHeight || doc.clientHeight),
+		];
+	},
+
