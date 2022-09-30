@@ -461,3 +461,13 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 		return 's';
 	},
+
+    getSliderComponent : function (thisObj) {
+		if (thisObj.mode.length > 2) {
+			switch (thisObj.mode.charAt(2).toLowerCase()) {
+				case 's': return 's'; break;
+				case 'v': return 'v'; break;
+			}
+		}
+		return null;
+	},
