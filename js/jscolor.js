@@ -804,3 +804,79 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 		return paletteObj;
 	},
+
+    createSliderGradient : function () {
+
+		var sliderObj = {
+			elm: null,
+			draw: null
+		};
+
+		if (jsc.isCanvasSupported) {
+			// Canvas implementation for modern browsers
+
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+
+			var drawFunc = function (width, height, color1, color2) {
+				canvas.width = width;
+				canvas.height = height;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				var grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+				grad.addColorStop(0, color1);
+				grad.addColorStop(1, color2);
+
+				ctx.fillStyle = grad;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+			};
+
+			sliderObj.elm = canvas;
+			sliderObj.draw = drawFunc;
+
+		} else {
+			// VML fallback for IE 7 and 8
+
+			jsc.initVML();
+
+			var vmlContainer = document.createElement('div');
+			vmlContainer.style.position = 'relative';
+			vmlContainer.style.overflow = 'hidden';
+
+			var grad = document.createElement(jsc._vmlNS + ':fill');
+			grad.type = 'gradient';
+			grad.method = 'linear';
+			grad.angle = '180';
+
+			var rect = document.createElement(jsc._vmlNS + ':rect');
+			rect.style.position = 'absolute';
+			rect.style.left = -1 + 'px';
+			rect.style.top = -1 + 'px';
+			rect.stroked = false;
+			rect.appendChild(grad);
+			vmlContainer.appendChild(rect);
+
+			var drawFunc = function (width, height, color1, color2) {
+				vmlContainer.style.width = width + 'px';
+				vmlContainer.style.height = height + 'px';
+
+				rect.style.width = (width + 1) + 'px';
+				rect.style.height = (height + 1) + 'px';
+
+				grad.color = color1;
+				grad.color2 = color2;
+			};
+			
+			sliderObj.elm = vmlContainer;
+			sliderObj.draw = drawFunc;
+		}
+
+		return sliderObj;
+	},
+
+
+	leaveValue : 1<<0,
+	leaveStyle : 1<<1,
+	leavePad : 1<<2,
+	leaveSld : 1<<3,
