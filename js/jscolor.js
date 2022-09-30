@@ -631,3 +631,17 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
+    setPad : function (thisObj, e, ofsX, ofsY) {
+		var pointerAbs = jsc.getAbsPointerPos(e);
+		var x = ofsX + pointerAbs.x - jsc._pointerOrigin.x - thisObj.padding - thisObj.insetWidth;
+		var y = ofsY + pointerAbs.y - jsc._pointerOrigin.y - thisObj.padding - thisObj.insetWidth;
+
+		var xVal = x * (360 / (thisObj.width - 1));
+		var yVal = 100 - (y * (100 / (thisObj.height - 1)));
+
+		switch (jsc.getPadYComponent(thisObj)) {
+		case 's': thisObj.fromHSV(xVal, yVal, null, jsc.leaveSld); break;
+		case 'v': thisObj.fromHSV(xVal, null, yVal, jsc.leaveSld); break;
+		}
+	},
+
