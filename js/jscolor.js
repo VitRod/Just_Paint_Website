@@ -645,3 +645,22 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
+
+
+
+    setSld : function (thisObj, e, ofsY) {
+		var pointerAbs = jsc.getAbsPointerPos(e);
+		var y = ofsY + pointerAbs.y - jsc._pointerOrigin.y - thisObj.padding - thisObj.insetWidth;
+
+		var yVal = 100 - (y * (100 / (thisObj.height - 1)));
+
+		switch (jsc.getSliderComponent(thisObj)) {
+		case 's': thisObj.fromHSV(null, yVal, null, jsc.leavePad); break;
+		case 'v': thisObj.fromHSV(null, null, yVal, jsc.leavePad); break;
+		}
+	},
+
+
+	_vmlNS : 'jsc_vml_',
+	_vmlCSS : 'jsc_vml_css_',
+	_vmlReady : false,
