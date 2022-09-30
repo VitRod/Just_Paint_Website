@@ -518,3 +518,17 @@ if (!window.jscolor) { window.jscolor = (function () {
 			jsc.picker.owner.hide();
 		}
 	},
+
+
+    pointerMoveEvent : {
+		mouse: 'mousemove',
+		touch: 'touchmove'
+	},
+	_pointerEndEvent : {
+		mouse: 'mouseup',
+		touch: 'touchend'
+	},
+
+
+	_pointerOrigin : null,
+	_capturedTarget : null,
