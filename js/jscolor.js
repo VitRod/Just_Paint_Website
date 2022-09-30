@@ -664,3 +664,23 @@ if (!window.jscolor) { window.jscolor = (function () {
 	_vmlNS : 'jsc_vml_',
 	_vmlCSS : 'jsc_vml_css_',
 	_vmlReady : false,
+
+
+    initVML : function () {
+		if (!jsc._vmlReady) {
+			// init VML namespace
+			var doc = document;
+			if (!doc.namespaces[jsc._vmlNS]) {
+				doc.namespaces.add(jsc._vmlNS, 'urn:schemas-microsoft-com:vml');
+			}
+			if (!doc.styleSheets[jsc._vmlCSS]) {
+				var tags = ['shape', 'shapetype', 'group', 'background', 'path', 'formulas', 'handles', 'fill', 'stroke', 'shadow', 'textbox', 'textpath', 'imagedata', 'line', 'polyline', 'curve', 'rect', 'roundrect', 'oval', 'arc', 'image'];
+				var ss = doc.createStyleSheet();
+				ss.owningElement.id = jsc._vmlCSS;
+				for (var i = 0; i < tags.length; i += 1) {
+					ss.addRule(jsc._vmlNS + '\\:' + tags[i], 'behavior:url(#default#VML);');
+				}
+			}
+			jsc._vmlReady = true;
+		}
+	},
