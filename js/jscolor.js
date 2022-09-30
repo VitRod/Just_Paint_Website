@@ -597,3 +597,16 @@ if (!window.jscolor) { window.jscolor = (function () {
 			}
 		}
 	},
+
+    onDocumentPointerEnd : function (e, target, controlName, pointerType) {
+		return function (e) {
+			var thisObj = target._jscInstance;
+			jsc.detachGroupEvents('drag');
+			jsc.releaseTarget();
+			// Always dispatch changes after detaching outstanding mouse handlers,
+			// in case some user interaction will occur in user's onchange callback
+			// that would intrude with current mouse events
+			jsc.dispatchChange(thisObj);
+		};
+	},
+
