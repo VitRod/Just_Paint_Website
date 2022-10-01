@@ -1097,6 +1097,47 @@ if (!window.jscolor) { window.jscolor = (function () {
 		};
 
 
+		// r: 0-255
+		// g: 0-255
+		// b: 0-255
+		//
+		this.fromRGB = function (r, g, b, flags) { // null = don't change
+			if (r !== null) {
+				if (isNaN(r)) { return false; }
+				r = Math.max(0, Math.min(255, r));
+			}
+			if (g !== null) {
+				if (isNaN(g)) { return false; }
+				g = Math.max(0, Math.min(255, g));
+			}
+			if (b !== null) {
+				if (isNaN(b)) { return false; }
+				b = Math.max(0, Math.min(255, b));
+			}
+
+			var hsv = RGB_HSV(
+				r===null ? this.rgb[0] : r,
+				g===null ? this.rgb[1] : g,
+				b===null ? this.rgb[2] : b
+			);
+			if (hsv[0] !== null) {
+				this.hsv[0] = Math.max(0, Math.min(360, hsv[0]));
+			}
+			if (hsv[2] !== 0) {
+				this.hsv[1] = hsv[1]===null ? null : Math.max(0, this.minS, Math.min(100, this.maxS, hsv[1]));
+			}
+			this.hsv[2] = hsv[2]===null ? null : Math.max(0, this.minV, Math.min(100, this.maxV, hsv[2]));
+
+			// update RGB according to final HSV, as some values might be trimmed
+			var rgb = HSV_RGB(this.hsv[0], this.hsv[1], this.hsv[2]);
+			this.rgb[0] = rgb[0];
+			this.rgb[1] = rgb[1];
+			this.rgb[2] = rgb[2];
+
+			this.exportColor(flags);
+		};
+
+
 
 
 
