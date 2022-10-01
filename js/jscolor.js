@@ -1760,6 +1760,65 @@ if (!window.jscolor) { window.jscolor = (function () {
 	}
 
 
+	/*
+		var elm = this.targetElement;
+		do {
+			// If the target element or one of its offsetParents has fixed position,
+			// then use fixed positioning instead
+			//
+			// Note: In Firefox, getComputedStyle returns null in a hidden iframe,
+			// that's why we need to check if the returned style object is non-empty
+			var currStyle = jsc.getStyle(elm);
+			if (currStyle && currStyle.position.toLowerCase() === 'fixed') {
+				this.fixed = true;
+			}
+
+			if (elm !== this.targetElement) {
+				// attach onParentScroll so that we can recompute the picker position
+				// when one of the offsetParents is scrolled
+				if (!elm._jscEventsAttached) {
+					jsc.attachEvent(elm, 'scroll', jsc.onParentScroll);
+					elm._jscEventsAttached = true;
+				}
+			}
+		} while ((elm = elm.offsetParent) && !jsc.isElementType(elm, 'body'));
+		*/
+
+		// valueElement
+		if (this.valueElement) {
+			if (jsc.isElementType(this.valueElement, 'input')) {
+				var updateField = function () {
+					THIS.fromString(THIS.valueElement.value, jsc.leaveValue);
+					jsc.dispatchFineChange(THIS);
+				};
+				jsc.attachEvent(this.valueElement, 'keyup', updateField);
+				jsc.attachEvent(this.valueElement, 'input', updateField);
+				jsc.attachEvent(this.valueElement, 'blur', blurValue);
+				this.valueElement.setAttribute('autocomplete', 'off');
+			}
+		}
+
+		// styleElement
+		if (this.styleElement) {
+			this.styleElement._jscOrigStyle = {
+				backgroundImage : this.styleElement.style.backgroundImage,
+				backgroundColor : this.styleElement.style.backgroundColor,
+				color : this.styleElement.style.color
+			};
+		}
+
+		if (this.value) {
+			// Try to set the color from the .value option and if unsuccessful,
+			// export the current color
+			this.fromString(this.value) || this.exportColor();
+		} else {
+			this.importColor();
+		}
+	}
+
+};
+
+
 
 
 
