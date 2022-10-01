@@ -1533,6 +1533,120 @@ if (!window.jscolor) { window.jscolor = (function () {
 			p.sldPtrS.style.height = sliderPtrSpace + 'px';
 
 
+// the Close button
+			function setBtnBorder () {
+				var insetColors = THIS.insetColor.split(/\s+/);
+				var outsetColor = insetColors.length < 2 ? insetColors[0] : insetColors[1] + ' ' + insetColors[0] + ' ' + insetColors[0] + ' ' + insetColors[1];
+				p.btn.style.borderColor = outsetColor;
+			}
+			p.btn.style.display = THIS.closable ? 'block' : 'none';
+			p.btn.style.position = 'absolute';
+			p.btn.style.left = THIS.padding + 'px';
+			p.btn.style.bottom = THIS.padding + 'px';
+			p.btn.style.padding = '0 15px';
+			p.btn.style.height = THIS.buttonHeight + 'px';
+			p.btn.style.border = THIS.insetWidth + 'px solid';
+			setBtnBorder();
+			p.btn.style.color = THIS.buttonColor;
+			p.btn.style.font = '12px sans-serif';
+			p.btn.style.textAlign = 'center';
+			try {
+				p.btn.style.cursor = 'pointer';
+			} catch(eOldIE) {
+				p.btn.style.cursor = 'hand';
+			}
+			p.btn.onmousedown = function () {
+				THIS.hide();
+			};
+			p.btnT.style.lineHeight = THIS.buttonHeight + 'px';
+			p.btnT.innerHTML = '';
+			p.btnT.appendChild(document.createTextNode(THIS.closeText));
+
+			// place pointers
+			redrawPad();
+			redrawSld();
+
+			// If we are changing the owner without first closing the picker,
+			// make sure to first deal with the old owner
+			if (jsc.picker.owner && jsc.picker.owner !== THIS) {
+				jsc.unsetClass(jsc.picker.owner.targetElement, THIS.activeClass);
+			}
+
+			// Set the new picker owner
+			jsc.picker.owner = THIS;
+
+			// The redrawPosition() method needs picker.owner to be set, that's why we call it here,
+			// after setting the owner
+			if (jsc.isElementType(container, 'body')) {
+				jsc.redrawPosition();
+			} else {
+				jsc._drawPosition(THIS, 0, 0, 'relative', false);
+			}
+
+			if (p.wrap.parentNode != container) {
+				container.appendChild(p.wrap);
+			}
+
+			jsc.setClass(THIS.targetElement, THIS.activeClass);
+		}
+
+		// the Close button
+		function setBtnBorder () {
+			var insetColors = THIS.insetColor.split(/\s+/);
+			var outsetColor = insetColors.length < 2 ? insetColors[0] : insetColors[1] + ' ' + insetColors[0] + ' ' + insetColors[0] + ' ' + insetColors[1];
+			p.btn.style.borderColor = outsetColor;
+		}
+		p.btn.style.display = THIS.closable ? 'block' : 'none';
+		p.btn.style.position = 'absolute';
+		p.btn.style.left = THIS.padding + 'px';
+		p.btn.style.bottom = THIS.padding + 'px';
+		p.btn.style.padding = '0 15px';
+		p.btn.style.height = THIS.buttonHeight + 'px';
+		p.btn.style.border = THIS.insetWidth + 'px solid';
+		setBtnBorder();
+		p.btn.style.color = THIS.buttonColor;
+		p.btn.style.font = '12px sans-serif';
+		p.btn.style.textAlign = 'center';
+		try {
+			p.btn.style.cursor = 'pointer';
+		} catch(eOldIE) {
+			p.btn.style.cursor = 'hand';
+		}
+		p.btn.onmousedown = function () {
+			THIS.hide();
+		};
+		p.btnT.style.lineHeight = THIS.buttonHeight + 'px';
+		p.btnT.innerHTML = '';
+		p.btnT.appendChild(document.createTextNode(THIS.closeText));
+
+		// place pointers
+		redrawPad();
+		redrawSld();
+
+		// If we are changing the owner without first closing the picker,
+		// make sure to first deal with the old owner
+		if (jsc.picker.owner && jsc.picker.owner !== THIS) {
+			jsc.unsetClass(jsc.picker.owner.targetElement, THIS.activeClass);
+		}
+
+		// Set the new picker owner
+		jsc.picker.owner = THIS;
+
+		// The redrawPosition() method needs picker.owner to be set, that's why we call it here,
+		// after setting the owner
+		if (jsc.isElementType(container, 'body')) {
+			jsc.redrawPosition();
+		} else {
+			jsc._drawPosition(THIS, 0, 0, 'relative', false);
+		}
+
+		if (p.wrap.parentNode != container) {
+			container.appendChild(p.wrap);
+		}
+
+		jsc.setClass(THIS.targetElement, THIS.activeClass);
+	}
+
 
 
 
