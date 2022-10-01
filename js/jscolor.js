@@ -1215,6 +1215,37 @@ if (!window.jscolor) { window.jscolor = (function () {
 		};
 
 
+		this._processParentElementsInDOM = function () {
+			if (this._linkedElementsProcessed) { return; }
+			this._linkedElementsProcessed = true;
+
+			var elm = this.targetElement;
+			do {
+				// If the target element or one of its parent nodes has fixed position,
+				// then use fixed positioning instead
+				//
+				// Note: In Firefox, getComputedStyle returns null in a hidden iframe,
+				// that's why we need to check if the returned style object is non-empty
+				var currStyle = jsc.getStyle(elm);
+				if (currStyle && currStyle.position.toLowerCase() === 'fixed') {
+					this.fixed = true;
+				}
+
+				if (elm !== this.targetElement) {
+					// Ensure to attach onParentScroll only once to each parent element
+					// (multiple targetElements can share the same parent nodes)
+					//
+					// Note: It's not just offsetParents that can be scrollable,
+					// that's why we loop through all parent nodes
+					if (!elm._jscEventsAttached) {
+						jsc.attachEvent(elm, 'scroll', jsc.onParentScroll);
+						elm._jscEventsAttached = true;
+					}
+				}
+			} while ((elm = elm.parentNode) && !jsc.isElementType(elm, 'body'));
+		};
+
+
 
 
 
