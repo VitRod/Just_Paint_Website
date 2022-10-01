@@ -908,3 +908,172 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 		return BoxShadow;
 	})(),
+
+	//
+	// Usage:
+	// var myColor = new jscolor(<targetElement> [, <options>])
+	//
+
+	jscolor : function (targetElement, options) {
+
+		// General options
+		//
+		this.value = null; // initial HEX color. To change it later, use methods fromString(), fromHSV() and fromRGB()
+		this.valueElement = targetElement; // element that will be used to display and input the color code
+		this.styleElement = targetElement; // element that will preview the picked color using CSS backgroundColor
+		this.required = true; // whether the associated text <input> can be left empty
+		this.refine = true; // whether to refine the entered color code (e.g. uppercase it and remove whitespace)
+		this.hash = false; // whether to prefix the HEX color code with # symbol
+		this.uppercase = true; // whether to show the color code in upper case
+		this.onFineChange = null; // called instantly every time the color changes (value can be either a function or a string with javascript code)
+		this.activeClass = 'jscolor-active'; // class to be set to the target element when a picker window is open on it
+		this.overwriteImportant = false; // whether to overwrite colors of styleElement using !important
+		this.minS = 0; // min allowed saturation (0 - 100)
+		this.maxS = 100; // max allowed saturation (0 - 100)
+		this.minV = 0; // min allowed value (brightness) (0 - 100)
+		this.maxV = 100; // max allowed value (brightness) (0 - 100)
+
+		// Accessing the picked color
+		//
+		this.hsv = [0, 0, 100]; // read-only  [0-360, 0-100, 0-100]
+		this.rgb = [255, 255, 255]; // read-only  [0-255, 0-255, 0-255]
+
+		// Color Picker options
+		//
+		this.width = 181; // width of color palette (in px)
+		this.height = 101; // height of color palette (in px)
+		this.showOnClick = true; // whether to display the color picker when user clicks on its target element
+		this.mode = 'HSV'; // HSV | HVS | HS | HV - layout of the color picker controls
+		this.position = 'bottom'; // left | right | top | bottom - position relative to the target element
+		this.smartPosition = true; // automatically change picker position when there is not enough space for it
+		this.sliderSize = 16; // px
+		this.crossSize = 8; // px
+		this.closable = false; // whether to display the Close button
+		this.closeText = 'Close';
+		this.buttonColor = '#000000'; // CSS color
+		this.buttonHeight = 18; // px
+		this.padding = 12; // px
+		this.backgroundColor = '#FFFFFF'; // CSS color
+		this.borderWidth = 1; // px
+		this.borderColor = '#BBBBBB'; // CSS color
+		this.borderRadius = 8; // px
+		this.insetWidth = 1; // px
+		this.insetColor = '#BBBBBB'; // CSS color
+		this.shadow = true; // whether to display shadow
+		this.shadowBlur = 15; // px
+		this.shadowColor = 'rgba(0,0,0,0.2)'; // CSS color
+		this.pointerColor = '#4C4C4C'; // px
+		this.pointerBorderColor = '#FFFFFF'; // px
+        this.pointerBorderWidth = 1; // px
+        this.pointerThickness = 2; // px
+		this.zIndex = 1000;
+		this.container = null; // where to append the color picker (BODY element by default)
+
+
+		for (var opt in options) {
+			if (options.hasOwnProperty(opt)) {
+				this[opt] = options[opt];
+			}
+		}
+
+
+		this.hide = function () {
+			if (isPickerOwner()) {
+				detachPicker();
+			}
+		};
+
+
+		this.show = function () {
+			drawPicker();
+		};
+
+
+		this.redraw = function () {
+			if (isPickerOwner()) {
+				drawPicker();
+			}
+		};
+
+
+		this.importColor = function () {
+			if (!this.valueElement) {
+				this.exportColor();
+			} else {
+				if (jsc.isElementType(this.valueElement, 'input')) {
+					if (!this.refine) {
+						if (!this.fromString(this.valueElement.value, jsc.leaveValue)) {
+							if (this.styleElement) {
+								this.styleElement.style.backgroundImage = this.styleElement._jscOrigStyle.backgroundImage;
+								this.styleElement.style.backgroundColor = this.styleElement._jscOrigStyle.backgroundColor;
+								this.styleElement.style.color = this.styleElement._jscOrigStyle.color;
+							}
+							this.exportColor(jsc.leaveValue | jsc.leaveStyle);
+						}
+					} else if (!this.required && /^\s*$/.test(this.valueElement.value)) {
+						this.valueElement.value = '';
+						if (this.styleElement) {
+							this.styleElement.style.backgroundImage = this.styleElement._jscOrigStyle.backgroundImage;
+							this.styleElement.style.backgroundColor = this.styleElement._jscOrigStyle.backgroundColor;
+							this.styleElement.style.color = this.styleElement._jscOrigStyle.color;
+						}
+						this.exportColor(jsc.leaveValue | jsc.leaveStyle);
+
+					} else if (this.fromString(this.valueElement.value)) {
+						// managed to import color successfully from the value -> OK, don't do anything
+					} else {
+						this.exportColor();
+					}
+				} else {
+					// not an input element -> doesn't have any value
+					this.exportColor();
+				}
+			}
+		};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
