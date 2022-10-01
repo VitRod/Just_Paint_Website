@@ -1069,6 +1069,33 @@ if (!window.jscolor) { window.jscolor = (function () {
 			}
 		};
 
+		// h: 0-360
+		// s: 0-100
+		// v: 0-100
+		//
+		this.fromHSV = function (h, s, v, flags) { // null = don't change
+			if (h !== null) {
+				if (isNaN(h)) { return false; }
+				h = Math.max(0, Math.min(360, h));
+			}
+			if (s !== null) {
+				if (isNaN(s)) { return false; }
+				s = Math.max(0, Math.min(100, this.maxS, s), this.minS);
+			}
+			if (v !== null) {
+				if (isNaN(v)) { return false; }
+				v = Math.max(0, Math.min(100, this.maxV, v), this.minV);
+			}
+
+			this.rgb = HSV_RGB(
+				h===null ? this.hsv[0] : (this.hsv[0]=h),
+				s===null ? this.hsv[1] : (this.hsv[1]=s),
+				v===null ? this.hsv[2] : (this.hsv[2]=v)
+			);
+
+			this.exportColor(flags);
+		};
+
 
 
 
