@@ -1032,6 +1032,43 @@ if (!window.jscolor) { window.jscolor = (function () {
 		};
 
 
+		this.exportColor = function (flags) {
+			if (!(flags & jsc.leaveValue) && this.valueElement) {
+				var value = this.toString();
+				if (this.uppercase) { value = value.toUpperCase(); }
+				if (this.hash) { value = '#' + value; }
+
+				if (jsc.isElementType(this.valueElement, 'input')) {
+					this.valueElement.value = value;
+				} else {
+					this.valueElement.innerHTML = value;
+				}
+			}
+			if (!(flags & jsc.leaveStyle)) {
+				if (this.styleElement) {
+					var bgColor = '#' + this.toString();
+					var fgColor = this.isLight() ? '#000' : '#FFF';
+
+					this.styleElement.style.backgroundImage = 'none';
+					this.styleElement.style.backgroundColor = bgColor;
+					this.styleElement.style.color = fgColor;
+
+					if (this.overwriteImportant) {
+						this.styleElement.setAttribute('style',
+							'background: ' + bgColor + ' !important; ' +
+							'color: ' + fgColor + ' !important;'
+						);
+					}
+				}
+			}
+			if (!(flags & jsc.leavePad) && isPickerOwner()) {
+				redrawPad();
+			}
+			if (!(flags & jsc.leaveSld) && isPickerOwner()) {
+				redrawSld();
+			}
+		};
+
 
 
 
