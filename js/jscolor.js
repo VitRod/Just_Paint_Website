@@ -1,214 +1,247 @@
+
+
 "use strict";
 
 
 if (!window.jscolor) { window.jscolor = (function () {
 
-    var jsc = {
+
+var jsc = {
 
 
-        register : function () {
-            jsc.attachDOMReadyEvent(jsc.init);
-            jsc.attachEvent(document, 'mousedown', jsc.onDocumentMouseDown);
-            jsc.attachEvent(document, 'touchstart', jsc.onDocumentTouchStart);
-            jsc.attachEvent(window, 'resize', jsc.onWindowResize);
-        },
-
-        init : function () {
-            if (jsc.jscolor.lookupClass) {
-                jsc.jscolor.installByClassName(jsc.jscolor.lookupClass);
-            }
-        },
-
-        tryInstallOnElements : function (elms, className) {
-            var matchClass = new RegExp('(^|\\s)(' + className + ')(\\s*(\\{[^}]*\\})|\\s|$)', 'i');
-    
-            for (var i = 0; i < elms.length; i += 1) {
-                if (elms[i].type !== undefined && elms[i].type.toLowerCase() == 'color') {
-                    if (jsc.isColorAttrSupported) {
-                        // skip inputs of type 'color' if supported by the browser
-                        continue;
-                    }
-                }
-                var m;
-                if (!elms[i].jscolor && elms[i].className && (m = elms[i].className.match(matchClass))) {
-                    var targetElm = elms[i];
-                    var optsStr = null;
-    
-                    var dataOptions = jsc.getDataAttr(targetElm, 'jscolor');
-                    if (dataOptions !== null) {
-                        optsStr = dataOptions;
-                    } else if (m[4]) {
-                        optsStr = m[4];
-                    }
-    
-                    var opts = {};
-                    if (optsStr) {
-                        try {
-                            opts = (new Function ('return (' + optsStr + ')'))();
-                        } catch(eParseError) {
-                            jsc.warn('Error parsing jscolor options: ' + eParseError + ':\n' + optsStr);
-                        }
-                    }
-                    targetElm.jscolor = new jsc.jscolor(targetElm, opts);
-                }
-            }
-        },
-
-        isColorAttrSupported : (function () {
-            var elm = document.createElement('input');
-            if (elm.setAttribute) {
-                elm.setAttribute('type', 'color');
-                if (elm.type.toLowerCase() == 'color') {
-                    return true;
-                }
-            }
-            return false;
-        })(),
-
-        isCanvasSupported : (function () {
-            var elm = document.createElement('canvas');
-            return !!(elm.getContext && elm.getContext('2d'));
-        })(),
-
-        fetchElement : function (mixed) {
-            return typeof mixed === 'string' ? document.getElementById(mixed) : mixed;
-        },
-    
-    
-        isElementType : function (elm, type) {
-            return elm.nodeName.toLowerCase() === type.toLowerCase();
-        },
-    
-    
-        getDataAttr : function (el, name) {
-            var attrName = 'data-' + name;
-            var attrValue = el.getAttribute(attrName);
-            if (attrValue !== null) {
-                return attrValue;
-            }
-            return null;
-        }, 
-
-        _attachedGroupEvents : {},
+	register : function () {
+		jsc.attachDOMReadyEvent(jsc.init);
+		jsc.attachEvent(document, 'mousedown', jsc.onDocumentMouseDown);
+		jsc.attachEvent(document, 'touchstart', jsc.onDocumentTouchStart);
+		jsc.attachEvent(window, 'resize', jsc.onWindowResize);
+	},
 
 
-
-        attachGroupEvent : function (groupName, el, evnt, func) {
-            if (!jsc._attachedGroupEvents.hasOwnProperty(groupName)) {
-                jsc._attachedGroupEvents[groupName] = [];
-            }
-            jsc._attachedGroupEvents[groupName].push([el, evnt, func]);
-            jsc.attachEvent(el, evnt, func);
-        },
+	init : function () {
+		if (jsc.jscolor.lookupClass) {
+			jsc.jscolor.installByClassName(jsc.jscolor.lookupClass);
+		}
+	},
 
 
-        detachGroupEvents : function (groupName) {
-            if (jsc._attachedGroupEvents.hasOwnProperty(groupName)) {
-                for (var i = 0; i < jsc._attachedGroupEvents[groupName].length; i += 1) {
-                    var evt = jsc._attachedGroupEvents[groupName][i];
-                    jsc.detachEvent(evt[0], evt[1], evt[2]);
-                }
-                delete jsc._attachedGroupEvents[groupName];
-            }
-        },
+	tryInstallOnElements : function (elms, className) {
+		var matchClass = new RegExp('(^|\\s)(' + className + ')(\\s*(\\{[^}]*\\})|\\s|$)', 'i');
 
-        attachDOMReadyEvent : function (func) {
-            var fired = false;
-            var fireOnce = function () {
-                if (!fired) {
-                    fired = true;
-                    func();
-                }
-            };
-    
-            if (document.readyState === 'complete') {
-                setTimeout(fireOnce, 1); // async
-                return;
-            }
-    
-            if (document.addEventListener) {
-                document.addEventListener('DOMContentLoaded', fireOnce, false);
-    
-                // Fallback
-                window.addEventListener('load', fireOnce, false);
-    
-            } else if (document.attachEvent) {
-                // IE
-                document.attachEvent('onreadystatechange', function () {
-                    if (document.readyState === 'complete') {
-                        document.detachEvent('onreadystatechange', arguments.callee);
-                        fireOnce();
-                    }
-                })
-    
-                // Fallback
-                window.attachEvent('onload', fireOnce);
-    
-                // IE7/8
-                if (document.documentElement.doScroll && window == window.top) {
-                    var tryScroll = function () {
-                        if (!document.body) { return; }
-                        try {
-                            document.documentElement.doScroll('left');
-                            fireOnce();
-                        } catch (e) {
-                            setTimeout(tryScroll, 1);
-                        }
-                    };
-                    tryScroll();
-                }
-            }
-        },
+		for (var i = 0; i < elms.length; i += 1) {
+			if (elms[i].type !== undefined && elms[i].type.toLowerCase() == 'color') {
+				if (jsc.isColorAttrSupported) {
+					// skip inputs of type 'color' if supported by the browser
+					continue;
+				}
+			}
+			var m;
+			if (!elms[i].jscolor && elms[i].className && (m = elms[i].className.match(matchClass))) {
+				var targetElm = elms[i];
+				var optsStr = null;
 
-        warn : function (msg) {
-            if (window.console && window.console.warn) {
-                window.console.warn(msg);
-            }
-        },
+				var dataOptions = jsc.getDataAttr(targetElm, 'jscolor');
+				if (dataOptions !== null) {
+					optsStr = dataOptions;
+				} else if (m[4]) {
+					optsStr = m[4];
+				}
 
-        preventDefault : function (e) {
-            if (e.preventDefault) { e.preventDefault(); }
-            e.returnValue = false;
-        },
-
-        captureTarget : function (target) {
-            // IE
-            if (target.setCapture) {
-                jsc._capturedTarget = target;
-                jsc._capturedTarget.setCapture();
-            }
-        },
-
-        releaseTarget : function () {
-            // IE
-            if (jsc._capturedTarget) {
-                jsc._capturedTarget.releaseCapture();
-                jsc._capturedTarget = null;
-            }
-        },
-
-        fireEvent : function (el, evnt) {
-            if (!el) {
-                return;
-            }
-            if (document.createEvent) {
-                var ev = document.createEvent('HTMLEvents');
-                ev.initEvent(evnt, true, true);
-                el.dispatchEvent(ev);
-            } else if (document.createEventObject) {
-                var ev = document.createEventObject();
-                el.fireEvent('on' + evnt, ev);
-            } else if (el['on' + evnt]) { // alternatively use the traditional event model
-                el['on' + evnt]();
-            }
-        },
-
-        classNameToList : function (className) {
-            return className.replace(/^\s+|\s+$/g, '').split(/\s+/);
-        },
+				var opts = {};
+				if (optsStr) {
+					try {
+						opts = (new Function ('return (' + optsStr + ')'))();
+					} catch(eParseError) {
+						jsc.warn('Error parsing jscolor options: ' + eParseError + ':\n' + optsStr);
+					}
+				}
+				targetElm.jscolor = new jsc.jscolor(targetElm, opts);
+			}
+		}
+	},
 
 
-        // The className parameter (str) can only contain a single class name
+	isColorAttrSupported : (function () {
+		var elm = document.createElement('input');
+		if (elm.setAttribute) {
+			elm.setAttribute('type', 'color');
+			if (elm.type.toLowerCase() == 'color') {
+				return true;
+			}
+		}
+		return false;
+	})(),
+
+
+	isCanvasSupported : (function () {
+		var elm = document.createElement('canvas');
+		return !!(elm.getContext && elm.getContext('2d'));
+	})(),
+
+
+	fetchElement : function (mixed) {
+		return typeof mixed === 'string' ? document.getElementById(mixed) : mixed;
+	},
+
+
+	isElementType : function (elm, type) {
+		return elm.nodeName.toLowerCase() === type.toLowerCase();
+	},
+
+
+	getDataAttr : function (el, name) {
+		var attrName = 'data-' + name;
+		var attrValue = el.getAttribute(attrName);
+		if (attrValue !== null) {
+			return attrValue;
+		}
+		return null;
+	},
+
+
+	attachEvent : function (el, evnt, func) {
+		if (el.addEventListener) {
+			el.addEventListener(evnt, func, false);
+		} else if (el.attachEvent) {
+			el.attachEvent('on' + evnt, func);
+		}
+	},
+
+
+	detachEvent : function (el, evnt, func) {
+		if (el.removeEventListener) {
+			el.removeEventListener(evnt, func, false);
+		} else if (el.detachEvent) {
+			el.detachEvent('on' + evnt, func);
+		}
+	},
+
+
+	_attachedGroupEvents : {},
+
+
+	attachGroupEvent : function (groupName, el, evnt, func) {
+		if (!jsc._attachedGroupEvents.hasOwnProperty(groupName)) {
+			jsc._attachedGroupEvents[groupName] = [];
+		}
+		jsc._attachedGroupEvents[groupName].push([el, evnt, func]);
+		jsc.attachEvent(el, evnt, func);
+	},
+
+
+	detachGroupEvents : function (groupName) {
+		if (jsc._attachedGroupEvents.hasOwnProperty(groupName)) {
+			for (var i = 0; i < jsc._attachedGroupEvents[groupName].length; i += 1) {
+				var evt = jsc._attachedGroupEvents[groupName][i];
+				jsc.detachEvent(evt[0], evt[1], evt[2]);
+			}
+			delete jsc._attachedGroupEvents[groupName];
+		}
+	},
+
+
+	attachDOMReadyEvent : function (func) {
+		var fired = false;
+		var fireOnce = function () {
+			if (!fired) {
+				fired = true;
+				func();
+			}
+		};
+
+		if (document.readyState === 'complete') {
+			setTimeout(fireOnce, 1); // async
+			return;
+		}
+
+		if (document.addEventListener) {
+			document.addEventListener('DOMContentLoaded', fireOnce, false);
+
+			// Fallback
+			window.addEventListener('load', fireOnce, false);
+
+		} else if (document.attachEvent) {
+			// IE
+			document.attachEvent('onreadystatechange', function () {
+				if (document.readyState === 'complete') {
+					document.detachEvent('onreadystatechange', arguments.callee);
+					fireOnce();
+				}
+			})
+
+			// Fallback
+			window.attachEvent('onload', fireOnce);
+
+			// IE7/8
+			if (document.documentElement.doScroll && window == window.top) {
+				var tryScroll = function () {
+					if (!document.body) { return; }
+					try {
+						document.documentElement.doScroll('left');
+						fireOnce();
+					} catch (e) {
+						setTimeout(tryScroll, 1);
+					}
+				};
+				tryScroll();
+			}
+		}
+	},
+
+
+	warn : function (msg) {
+		if (window.console && window.console.warn) {
+			window.console.warn(msg);
+		}
+	},
+
+
+	preventDefault : function (e) {
+		if (e.preventDefault) { e.preventDefault(); }
+		e.returnValue = false;
+	},
+
+
+	captureTarget : function (target) {
+		// IE
+		if (target.setCapture) {
+			jsc._capturedTarget = target;
+			jsc._capturedTarget.setCapture();
+		}
+	},
+
+
+	releaseTarget : function () {
+		// IE
+		if (jsc._capturedTarget) {
+			jsc._capturedTarget.releaseCapture();
+			jsc._capturedTarget = null;
+		}
+	},
+
+
+	fireEvent : function (el, evnt) {
+		if (!el) {
+			return;
+		}
+		if (document.createEvent) {
+			var ev = document.createEvent('HTMLEvents');
+			ev.initEvent(evnt, true, true);
+			el.dispatchEvent(ev);
+		} else if (document.createEventObject) {
+			var ev = document.createEventObject();
+			el.fireEvent('on' + evnt, ev);
+		} else if (el['on' + evnt]) { // alternatively use the traditional event model
+			el['on' + evnt]();
+		}
+	},
+
+
+	classNameToList : function (className) {
+		return className.replace(/^\s+|\s+$/g, '').split(/\s+/);
+	},
+
+
+	// The className parameter (str) can only contain a single class name
 	hasClass : function (elm, className) {
 		if (!className) {
 			return false;
@@ -217,8 +250,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-
-    // The className parameter (str) can contain multiple class names separated by whitespace
+	// The className parameter (str) can contain multiple class names separated by whitespace
 	setClass : function (elm, className) {
 		var classList = jsc.classNameToList(className);
 		for (var i = 0; i < classList.length; i += 1) {
@@ -228,7 +260,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
-    // The className parameter (str) can contain multiple class names separated by whitespace
+
+	// The className parameter (str) can contain multiple class names separated by whitespace
 	unsetClass : function (elm, className) {
 		var classList = jsc.classNameToList(className);
 		for (var i = 0; i < classList.length; i += 1) {
@@ -242,12 +275,13 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
-    getStyle : function (elm) {
+
+	getStyle : function (elm) {
 		return window.getComputedStyle ? window.getComputedStyle(elm) : elm.currentStyle;
 	},
 
 
-    setStyle : (function () {
+	setStyle : (function () {
 		var helper = document.createElement('div');
 		var getSupportedProp = function (names) {
 			for (var i = 0; i < names.length; i += 1) {
@@ -303,7 +337,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return [e.offsetWidth, e.offsetHeight];
 	},
 
-    // get pointer's X/Y coordinates relative to viewport
+
+	// get pointer's X/Y coordinates relative to viewport
 	getAbsPointerPos : function (e) {
 		if (!e) { e = window.event; }
 		var x = 0, y = 0;
@@ -318,7 +353,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return { x: x, y: y };
 	},
 
-    // get pointer's X/Y coordinates relative to target element
+
+	// get pointer's X/Y coordinates relative to target element
 	getRelPointerPos : function (e) {
 		if (!e) { e = window.event; }
 		var target = e.target || e.srcElement;
@@ -342,7 +378,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-    getViewPos : function () {
+	getViewPos : function () {
 		var doc = document.documentElement;
 		return [
 			(window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0),
@@ -350,7 +386,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		];
 	},
 
-    getViewSize : function () {
+
+	getViewSize : function () {
 		var doc = document.documentElement;
 		return [
 			(window.innerWidth || doc.clientWidth),
@@ -359,7 +396,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-    redrawPosition : function () {
+	redrawPosition : function () {
 
 		if (jsc.picker && jsc.picker.owner) {
 			var thisObj = jsc.picker.owner;
@@ -417,7 +454,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-    _drawPosition : function (thisObj, x, y, positionValue, contractShadow) {
+	_drawPosition : function (thisObj, x, y, positionValue, contractShadow) {
 		var vShadow = contractShadow ? 0 : thisObj.shadowBlur; // px
 
 		jsc.picker.wrap.style.position = positionValue;
@@ -431,7 +468,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 				null);
 	},
 
-    getPickerDims : function (thisObj) {
+
+	getPickerDims : function (thisObj) {
 		var displaySlider = !!jsc.getSliderComponent(thisObj);
 		var dims = [
 			2 * thisObj.insetWidth + 2 * thisObj.padding + thisObj.width +
@@ -442,7 +480,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return dims;
 	},
 
-    getPickerOuterDims : function (thisObj) {
+
+	getPickerOuterDims : function (thisObj) {
 		var dims = jsc.getPickerDims(thisObj);
 		return [
 			dims[0] + 2 * thisObj.borderWidth,
@@ -450,7 +489,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		];
 	},
 
-    getPadToSliderPadding : function (thisObj) {
+
+	getPadToSliderPadding : function (thisObj) {
 		return Math.max(thisObj.padding, 1.5 * (2 * thisObj.pointerBorderWidth + thisObj.pointerThickness));
 	},
 
@@ -462,7 +502,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return 's';
 	},
 
-    getSliderComponent : function (thisObj) {
+
+	getSliderComponent : function (thisObj) {
 		if (thisObj.mode.length > 2) {
 			switch (thisObj.mode.charAt(2).toLowerCase()) {
 				case 's': return 's'; break;
@@ -472,7 +513,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return null;
 	},
 
-    onDocumentMouseDown : function (e) {
+
+	onDocumentMouseDown : function (e) {
 		if (!e) { e = window.event; }
 		var target = e.target || e.srcElement;
 
@@ -490,7 +532,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
-    onDocumentTouchStart : function (e) {
+
+	onDocumentTouchStart : function (e) {
 		if (!e) { e = window.event; }
 		var target = e.target || e.srcElement;
 
@@ -507,7 +550,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
-    onWindowResize : function (e) {
+
+	onWindowResize : function (e) {
 		jsc.redrawPosition();
 	},
 
@@ -520,7 +564,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-    pointerMoveEvent : {
+	_pointerMoveEvent : {
 		mouse: 'mousemove',
 		touch: 'touchmove'
 	},
@@ -533,7 +577,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 	_pointerOrigin : null,
 	_capturedTarget : null,
 
-    onControlPointerStart : function (e, target, controlName, pointerType) {
+
+	onControlPointerStart : function (e, target, controlName, pointerType) {
 		var thisObj = target._jscInstance;
 
 		jsc.preventDefault(e);
@@ -579,7 +624,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		jsc.dispatchFineChange(thisObj);
 	},
 
-    onDocumentPointerMove : function (e, target, controlName, pointerType, offset) {
+
+	onDocumentPointerMove : function (e, target, controlName, pointerType, offset) {
 		return function (e) {
 			var thisObj = target._jscInstance;
 			switch (controlName) {
@@ -598,7 +644,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
-    onDocumentPointerEnd : function (e, target, controlName, pointerType) {
+
+	onDocumentPointerEnd : function (e, target, controlName, pointerType) {
 		return function (e) {
 			var thisObj = target._jscInstance;
 			jsc.detachGroupEvents('drag');
@@ -610,7 +657,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		};
 	},
 
-    dispatchChange : function (thisObj) {
+
+	dispatchChange : function (thisObj) {
 		if (thisObj.valueElement) {
 			if (jsc.isElementType(thisObj.valueElement, 'input')) {
 				jsc.fireEvent(thisObj.valueElement, 'change');
@@ -631,7 +679,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		}
 	},
 
-    setPad : function (thisObj, e, ofsX, ofsY) {
+
+	setPad : function (thisObj, e, ofsX, ofsY) {
 		var pointerAbs = jsc.getAbsPointerPos(e);
 		var x = ofsX + pointerAbs.x - jsc._pointerOrigin.x - thisObj.padding - thisObj.insetWidth;
 		var y = ofsY + pointerAbs.y - jsc._pointerOrigin.y - thisObj.padding - thisObj.insetWidth;
@@ -646,9 +695,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-
-
-    setSld : function (thisObj, e, ofsY) {
+	setSld : function (thisObj, e, ofsY) {
 		var pointerAbs = jsc.getAbsPointerPos(e);
 		var y = ofsY + pointerAbs.y - jsc._pointerOrigin.y - thisObj.padding - thisObj.insetWidth;
 
@@ -666,7 +713,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	_vmlReady : false,
 
 
-    initVML : function () {
+	initVML : function () {
 		if (!jsc._vmlReady) {
 			// init VML namespace
 			var doc = document;
@@ -686,7 +733,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	},
 
 
-    createPalette : function () {
+	createPalette : function () {
 
 		var paletteObj = {
 			elm: null,
@@ -805,7 +852,8 @@ if (!window.jscolor) { window.jscolor = (function () {
 		return paletteObj;
 	},
 
-    createSliderGradient : function () {
+
+	createSliderGradient : function () {
 
 		var sliderObj = {
 			elm: null,
@@ -882,7 +930,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 	leaveSld : 1<<3,
 
 
-    BoxShadow : (function () {
+	BoxShadow : (function () {
 		var BoxShadow = function (hShadow, vShadow, blur, spread, color, inset) {
 			this.hShadow = hShadow;
 			this.vShadow = vShadow;
@@ -908,6 +956,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 		return BoxShadow;
 	})(),
+
 
 	//
 	// Usage:
@@ -1069,6 +1118,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 			}
 		};
 
+
 		// h: 0-360
 		// s: 0-100
 		// v: 0-100
@@ -1137,6 +1187,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 			this.exportColor(flags);
 		};
 
+
 		this.fromString = function (str, flags) {
 			var m;
 			if (m = str.match(/^\W*([0-9A-F]{3}([0-9A-F]{3})?)\W*$/i)) {
@@ -1181,6 +1232,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 			}
 			return false;
 		};
+
 
 		this.toString = function () {
 			return (
@@ -1246,7 +1298,6 @@ if (!window.jscolor) { window.jscolor = (function () {
 		};
 
 
-
 		// r: 0-255
 		// g: 0-255
 		// b: 0-255
@@ -1307,6 +1358,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 			jsc.picker.wrap.parentNode.removeChild(jsc.picker.wrap);
 			delete jsc.picker.owner;
 		}
+
 
 		function drawPicker () {
 
@@ -1532,8 +1584,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 			p.sldPtrS.style.width = THIS.sliderSize + 'px';
 			p.sldPtrS.style.height = sliderPtrSpace + 'px';
 
-
-// the Close button
+			// the Close button
 			function setBtnBorder () {
 				var insetColors = THIS.insetColor.split(/\s+/);
 				var outsetColor = insetColors.length < 2 ? insetColors[0] : insetColors[1] + ' ' + insetColors[0] + ' ' + insetColors[0] + ' ' + insetColors[1];
@@ -1590,177 +1641,120 @@ if (!window.jscolor) { window.jscolor = (function () {
 			jsc.setClass(THIS.targetElement, THIS.activeClass);
 		}
 
-		// the Close button
-		function setBtnBorder () {
-			var insetColors = THIS.insetColor.split(/\s+/);
-			var outsetColor = insetColors.length < 2 ? insetColors[0] : insetColors[1] + ' ' + insetColors[0] + ' ' + insetColors[0] + ' ' + insetColors[1];
-			p.btn.style.borderColor = outsetColor;
-		}
-		p.btn.style.display = THIS.closable ? 'block' : 'none';
-		p.btn.style.position = 'absolute';
-		p.btn.style.left = THIS.padding + 'px';
-		p.btn.style.bottom = THIS.padding + 'px';
-		p.btn.style.padding = '0 15px';
-		p.btn.style.height = THIS.buttonHeight + 'px';
-		p.btn.style.border = THIS.insetWidth + 'px solid';
-		setBtnBorder();
-		p.btn.style.color = THIS.buttonColor;
-		p.btn.style.font = '12px sans-serif';
-		p.btn.style.textAlign = 'center';
-		try {
-			p.btn.style.cursor = 'pointer';
-		} catch(eOldIE) {
-			p.btn.style.cursor = 'hand';
-		}
-		p.btn.onmousedown = function () {
-			THIS.hide();
-		};
-		p.btnT.style.lineHeight = THIS.buttonHeight + 'px';
-		p.btnT.innerHTML = '';
-		p.btnT.appendChild(document.createTextNode(THIS.closeText));
 
-		// place pointers
-		redrawPad();
-		redrawSld();
-
-		// If we are changing the owner without first closing the picker,
-		// make sure to first deal with the old owner
-		if (jsc.picker.owner && jsc.picker.owner !== THIS) {
-			jsc.unsetClass(jsc.picker.owner.targetElement, THIS.activeClass);
-		}
-
-		// Set the new picker owner
-		jsc.picker.owner = THIS;
-
-		// The redrawPosition() method needs picker.owner to be set, that's why we call it here,
-		// after setting the owner
-		if (jsc.isElementType(container, 'body')) {
-			jsc.redrawPosition();
-		} else {
-			jsc._drawPosition(THIS, 0, 0, 'relative', false);
-		}
-
-		if (p.wrap.parentNode != container) {
-			container.appendChild(p.wrap);
-		}
-
-		jsc.setClass(THIS.targetElement, THIS.activeClass);
-	}
-
-
-	function redrawPad () {
-		// redraw the pad pointer
-		switch (jsc.getPadYComponent(THIS)) {
-		case 's': var yComponent = 1; break;
-		case 'v': var yComponent = 2; break;
-		}
-		var x = Math.round((THIS.hsv[0] / 360) * (THIS.width - 1));
-		var y = Math.round((1 - THIS.hsv[yComponent] / 100) * (THIS.height - 1));
-		var crossOuterSize = (2 * THIS.pointerBorderWidth + THIS.pointerThickness + 2 * THIS.crossSize);
-		var ofs = -Math.floor(crossOuterSize / 2);
-		jsc.picker.cross.style.left = (x + ofs) + 'px';
-		jsc.picker.cross.style.top = (y + ofs) + 'px';
-
-		// redraw the slider
-		switch (jsc.getSliderComponent(THIS)) {
-		case 's':
-			var rgb1 = HSV_RGB(THIS.hsv[0], 100, THIS.hsv[2]);
-			var rgb2 = HSV_RGB(THIS.hsv[0], 0, THIS.hsv[2]);
-			var color1 = 'rgb(' +
-				Math.round(rgb1[0]) + ',' +
-				Math.round(rgb1[1]) + ',' +
-				Math.round(rgb1[2]) + ')';
-			var color2 = 'rgb(' +
-				Math.round(rgb2[0]) + ',' +
-				Math.round(rgb2[1]) + ',' +
-				Math.round(rgb2[2]) + ')';
-			jsc.picker.sldGrad.draw(THIS.sliderSize, THIS.height, color1, color2);
-			break;
-		case 'v':
-			var rgb = HSV_RGB(THIS.hsv[0], THIS.hsv[1], 100);
-			var color1 = 'rgb(' +
-				Math.round(rgb[0]) + ',' +
-				Math.round(rgb[1]) + ',' +
-				Math.round(rgb[2]) + ')';
-			var color2 = '#000';
-			jsc.picker.sldGrad.draw(THIS.sliderSize, THIS.height, color1, color2);
-			break;
-		}
-	}
-
-
-	function redrawSld () {
-		var sldComponent = jsc.getSliderComponent(THIS);
-		if (sldComponent) {
-			// redraw the slider pointer
-			switch (sldComponent) {
+		function redrawPad () {
+			// redraw the pad pointer
+			switch (jsc.getPadYComponent(THIS)) {
 			case 's': var yComponent = 1; break;
 			case 'v': var yComponent = 2; break;
 			}
+			var x = Math.round((THIS.hsv[0] / 360) * (THIS.width - 1));
 			var y = Math.round((1 - THIS.hsv[yComponent] / 100) * (THIS.height - 1));
-			jsc.picker.sldPtrOB.style.top = (y - (2 * THIS.pointerBorderWidth + THIS.pointerThickness) - Math.floor(sliderPtrSpace / 2)) + 'px';
+			var crossOuterSize = (2 * THIS.pointerBorderWidth + THIS.pointerThickness + 2 * THIS.crossSize);
+			var ofs = -Math.floor(crossOuterSize / 2);
+			jsc.picker.cross.style.left = (x + ofs) + 'px';
+			jsc.picker.cross.style.top = (y + ofs) + 'px';
+
+			// redraw the slider
+			switch (jsc.getSliderComponent(THIS)) {
+			case 's':
+				var rgb1 = HSV_RGB(THIS.hsv[0], 100, THIS.hsv[2]);
+				var rgb2 = HSV_RGB(THIS.hsv[0], 0, THIS.hsv[2]);
+				var color1 = 'rgb(' +
+					Math.round(rgb1[0]) + ',' +
+					Math.round(rgb1[1]) + ',' +
+					Math.round(rgb1[2]) + ')';
+				var color2 = 'rgb(' +
+					Math.round(rgb2[0]) + ',' +
+					Math.round(rgb2[1]) + ',' +
+					Math.round(rgb2[2]) + ')';
+				jsc.picker.sldGrad.draw(THIS.sliderSize, THIS.height, color1, color2);
+				break;
+			case 'v':
+				var rgb = HSV_RGB(THIS.hsv[0], THIS.hsv[1], 100);
+				var color1 = 'rgb(' +
+					Math.round(rgb[0]) + ',' +
+					Math.round(rgb[1]) + ',' +
+					Math.round(rgb[2]) + ')';
+				var color2 = '#000';
+				jsc.picker.sldGrad.draw(THIS.sliderSize, THIS.height, color1, color2);
+				break;
+			}
 		}
-	}
 
 
-	function isPickerOwner () {
-		return jsc.picker && jsc.picker.owner === THIS;
-	}
+		function redrawSld () {
+			var sldComponent = jsc.getSliderComponent(THIS);
+			if (sldComponent) {
+				// redraw the slider pointer
+				switch (sldComponent) {
+				case 's': var yComponent = 1; break;
+				case 'v': var yComponent = 2; break;
+				}
+				var y = Math.round((1 - THIS.hsv[yComponent] / 100) * (THIS.height - 1));
+				jsc.picker.sldPtrOB.style.top = (y - (2 * THIS.pointerBorderWidth + THIS.pointerThickness) - Math.floor(sliderPtrSpace / 2)) + 'px';
+			}
+		}
 
 
-	function blurValue () {
-		THIS.importColor();
-	}
+		function isPickerOwner () {
+			return jsc.picker && jsc.picker.owner === THIS;
+		}
 
-	// Find the target element
-	if (typeof targetElement === 'string') {
-		var id = targetElement;
-		var elm = document.getElementById(id);
-		if (elm) {
-			this.targetElement = elm;
+
+		function blurValue () {
+			THIS.importColor();
+		}
+
+
+		// Find the target element
+		if (typeof targetElement === 'string') {
+			var id = targetElement;
+			var elm = document.getElementById(id);
+			if (elm) {
+				this.targetElement = elm;
+			} else {
+				jsc.warn('Could not find target element with ID \'' + id + '\'');
+			}
+		} else if (targetElement) {
+			this.targetElement = targetElement;
 		} else {
-			jsc.warn('Could not find target element with ID \'' + id + '\'');
+			jsc.warn('Invalid target element: \'' + targetElement + '\'');
 		}
-	} else if (targetElement) {
-		this.targetElement = targetElement;
-	} else {
-		jsc.warn('Invalid target element: \'' + targetElement + '\'');
-	}
 
-	if (this.targetElement._jscLinkedInstance) {
-		jsc.warn('Cannot link jscolor twice to the same element. Skipping.');
-		return;
-	}
-	this.targetElement._jscLinkedInstance = this;
-
-	// Find the value element
-	this.valueElement = jsc.fetchElement(this.valueElement);
-	// Find the style element
-	this.styleElement = jsc.fetchElement(this.styleElement);
-
-	var THIS = this;
-	var container =
-		this.container ?
-		jsc.fetchElement(this.container) :
-		document.getElementsByTagName('body')[0];
-	var sliderPtrSpace = 3; // px
-
-	// For BUTTON elements it's important to stop them from sending the form when clicked
-	// (e.g. in Safari)
-	if (jsc.isElementType(this.targetElement, 'button')) {
-		if (this.targetElement.onclick) {
-			var origCallback = this.targetElement.onclick;
-			this.targetElement.onclick = function (evt) {
-				origCallback.call(this, evt);
-				return false;
-			};
-		} else {
-			this.targetElement.onclick = function () { return false; };
+		if (this.targetElement._jscLinkedInstance) {
+			jsc.warn('Cannot link jscolor twice to the same element. Skipping.');
+			return;
 		}
-	}
+		this.targetElement._jscLinkedInstance = this;
 
+		// Find the value element
+		this.valueElement = jsc.fetchElement(this.valueElement);
+		// Find the style element
+		this.styleElement = jsc.fetchElement(this.styleElement);
 
-	/*
+		var THIS = this;
+		var container =
+			this.container ?
+			jsc.fetchElement(this.container) :
+			document.getElementsByTagName('body')[0];
+		var sliderPtrSpace = 3; // px
+
+		// For BUTTON elements it's important to stop them from sending the form when clicked
+		// (e.g. in Safari)
+		if (jsc.isElementType(this.targetElement, 'button')) {
+			if (this.targetElement.onclick) {
+				var origCallback = this.targetElement.onclick;
+				this.targetElement.onclick = function (evt) {
+					origCallback.call(this, evt);
+					return false;
+				};
+			} else {
+				this.targetElement.onclick = function () { return false; };
+			}
+		}
+
+		/*
 		var elm = this.targetElement;
 		do {
 			// If the target element or one of its offsetParents has fixed position,
@@ -1818,6 +1812,7 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 };
 
+
 //================================
 // Public properties and methods
 //================================
@@ -1847,49 +1842,3 @@ return jsc.jscolor;
 
 
 })(); }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
