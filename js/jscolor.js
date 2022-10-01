@@ -1818,6 +1818,37 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 };
 
+//================================
+// Public properties and methods
+//================================
+
+
+// By default, search for all elements with class="jscolor" and install a color picker on them.
+//
+// You can change what class name will be looked for by setting the property jscolor.lookupClass
+// anywhere in your HTML document. To completely disable the automatic lookup, set it to null.
+//
+jsc.jscolor.lookupClass = 'jscolor';
+
+
+jsc.jscolor.installByClassName = function (className) {
+	var inputElms = document.getElementsByTagName('input');
+	var buttonElms = document.getElementsByTagName('button');
+
+	jsc.tryInstallOnElements(inputElms, className);
+	jsc.tryInstallOnElements(buttonElms, className);
+};
+
+
+jsc.register();
+
+
+return jsc.jscolor;
+
+
+})(); }
+
+
 
 
 
