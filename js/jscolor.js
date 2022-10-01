@@ -1247,6 +1247,67 @@ if (!window.jscolor) { window.jscolor = (function () {
 
 
 
+		// r: 0-255
+		// g: 0-255
+		// b: 0-255
+		//
+		// returns: [ 0-360, 0-100, 0-100 ]
+		//
+		function RGB_HSV (r, g, b) {
+			r /= 255;
+			g /= 255;
+			b /= 255;
+			var n = Math.min(Math.min(r,g),b);
+			var v = Math.max(Math.max(r,g),b);
+			var m = v - n;
+			if (m === 0) { return [ null, 0, 100 * v ]; }
+			var h = r===n ? 3+(b-g)/m : (g===n ? 5+(r-b)/m : 1+(g-r)/m);
+			return [
+				60 * (h===6?0:h),
+				100 * (m/v),
+				100 * v
+			];
+		}
+
+
+		// h: 0-360
+		// s: 0-100
+		// v: 0-100
+		//
+		// returns: [ 0-255, 0-255, 0-255 ]
+		//
+		function HSV_RGB (h, s, v) {
+			var u = 255 * (v / 100);
+
+			if (h === null) {
+				return [ u, u, u ];
+			}
+
+			h /= 60;
+			s /= 100;
+
+			var i = Math.floor(h);
+			var f = i%2 ? h-i : 1-(h-i);
+			var m = u * (1 - s);
+			var n = u * (1 - s * f);
+			switch (i) {
+				case 6:
+				case 0: return [u,n,m];
+				case 1: return [n,u,m];
+				case 2: return [m,u,n];
+				case 3: return [m,n,u];
+				case 4: return [n,m,u];
+				case 5: return [u,m,n];
+			}
+		}
+
+
+		function detachPicker () {
+			jsc.unsetClass(THIS.targetElement, THIS.activeClass);
+			jsc.picker.wrap.parentNode.removeChild(jsc.picker.wrap);
+			delete jsc.picker.owner;
+		}
+
 
 
 
