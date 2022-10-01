@@ -1712,6 +1712,53 @@ if (!window.jscolor) { window.jscolor = (function () {
 		THIS.importColor();
 	}
 
+	// Find the target element
+	if (typeof targetElement === 'string') {
+		var id = targetElement;
+		var elm = document.getElementById(id);
+		if (elm) {
+			this.targetElement = elm;
+		} else {
+			jsc.warn('Could not find target element with ID \'' + id + '\'');
+		}
+	} else if (targetElement) {
+		this.targetElement = targetElement;
+	} else {
+		jsc.warn('Invalid target element: \'' + targetElement + '\'');
+	}
+
+	if (this.targetElement._jscLinkedInstance) {
+		jsc.warn('Cannot link jscolor twice to the same element. Skipping.');
+		return;
+	}
+	this.targetElement._jscLinkedInstance = this;
+
+	// Find the value element
+	this.valueElement = jsc.fetchElement(this.valueElement);
+	// Find the style element
+	this.styleElement = jsc.fetchElement(this.styleElement);
+
+	var THIS = this;
+	var container =
+		this.container ?
+		jsc.fetchElement(this.container) :
+		document.getElementsByTagName('body')[0];
+	var sliderPtrSpace = 3; // px
+
+	// For BUTTON elements it's important to stop them from sending the form when clicked
+	// (e.g. in Safari)
+	if (jsc.isElementType(this.targetElement, 'button')) {
+		if (this.targetElement.onclick) {
+			var origCallback = this.targetElement.onclick;
+			this.targetElement.onclick = function (evt) {
+				origCallback.call(this, evt);
+				return false;
+			};
+		} else {
+			this.targetElement.onclick = function () { return false; };
+		}
+	}
+
 
 
 
