@@ -1182,6 +1182,39 @@ if (!window.jscolor) { window.jscolor = (function () {
 			return false;
 		};
 
+		this.toString = function () {
+			return (
+				(0x100 | Math.round(this.rgb[0])).toString(16).substr(1) +
+				(0x100 | Math.round(this.rgb[1])).toString(16).substr(1) +
+				(0x100 | Math.round(this.rgb[2])).toString(16).substr(1)
+			);
+		};
+
+
+		this.toHEXString = function () {
+			return '#' + this.toString().toUpperCase();
+		};
+
+
+		this.toRGBString = function () {
+			return ('rgb(' +
+				Math.round(this.rgb[0]) + ',' +
+				Math.round(this.rgb[1]) + ',' +
+				Math.round(this.rgb[2]) + ')'
+			);
+		};
+
+
+		this.isLight = function () {
+			return (
+				0.213 * this.rgb[0] +
+				0.715 * this.rgb[1] +
+				0.072 * this.rgb[2] >
+				255 / 2
+			);
+		};
+
+
 
 
 
