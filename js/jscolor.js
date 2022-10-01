@@ -1137,6 +1137,51 @@ if (!window.jscolor) { window.jscolor = (function () {
 			this.exportColor(flags);
 		};
 
+		this.fromString = function (str, flags) {
+			var m;
+			if (m = str.match(/^\W*([0-9A-F]{3}([0-9A-F]{3})?)\W*$/i)) {
+				// HEX notation
+				//
+
+				if (m[1].length === 6) {
+					// 6-char notation
+					this.fromRGB(
+						parseInt(m[1].substr(0,2),16),
+						parseInt(m[1].substr(2,2),16),
+						parseInt(m[1].substr(4,2),16),
+						flags
+					);
+				} else {
+					// 3-char notation
+					this.fromRGB(
+						parseInt(m[1].charAt(0) + m[1].charAt(0),16),
+						parseInt(m[1].charAt(1) + m[1].charAt(1),16),
+						parseInt(m[1].charAt(2) + m[1].charAt(2),16),
+						flags
+					);
+				}
+				return true;
+
+			} else if (m = str.match(/^\W*rgba?\(([^)]*)\)\W*$/i)) {
+				var params = m[1].split(',');
+				var re = /^\s*(\d*)(\.\d+)?\s*$/;
+				var mR, mG, mB;
+				if (
+					params.length >= 3 &&
+					(mR = params[0].match(re)) &&
+					(mG = params[1].match(re)) &&
+					(mB = params[2].match(re))
+				) {
+					var r = parseFloat((mR[1] || '0') + (mR[2] || ''));
+					var g = parseFloat((mG[1] || '0') + (mG[2] || ''));
+					var b = parseFloat((mB[1] || '0') + (mB[2] || ''));
+					this.fromRGB(r, g, b, flags);
+					return true;
+				}
+			}
+			return false;
+		};
+
 
 
 
